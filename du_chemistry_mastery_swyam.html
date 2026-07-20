@@ -1,0 +1,2581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DU Chemistry Mastery — Sri Venkateswara College</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0d1117;
+  --bg2: #161b22;
+  --bg3: #21262d;
+  --border: #30363d;
+  --text: #e6edf3;
+  --muted: #8b949e;
+  --gold: #f0b429;
+  --gold-dim: rgba(240,180,41,0.15);
+  --teal: #2fd8a4;
+  --teal-dim: rgba(47,216,164,0.12);
+  --red: #ff6b6b;
+  --red-dim: rgba(255,107,107,0.12);
+  --blue: #58a6ff;
+  --purple: #bc8cff;
+  --green: #56d364;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+}
+
+/* ===== SIDEBAR ===== */
+#sidebar {
+  width: 280px;
+  min-width: 280px;
+  background: var(--bg2);
+  border-right: 1px solid var(--border);
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+}
+#sidebar::-webkit-scrollbar { width: 4px; }
+#sidebar::-webkit-scrollbar-track { background: transparent; }
+#sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+.sidebar-header {
+  padding: 20px 16px 16px;
+  border-bottom: 1px solid var(--border);
+}
+.sidebar-header h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 16px;
+  color: var(--gold);
+  line-height: 1.3;
+}
+.sidebar-header p {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 4px;
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+.progress-bar-wrap {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+}
+.progress-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--muted);
+  margin-bottom: 6px;
+  font-family: 'IBM Plex Mono', monospace;
+}
+.progress-bar {
+  height: 4px;
+  background: var(--bg3);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold), var(--teal));
+  border-radius: 4px;
+  transition: width 0.4s ease;
+}
+
+.unit-section { padding: 8px 0; }
+.unit-label {
+  padding: 8px 16px 4px;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-family: 'IBM Plex Mono', monospace;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.unit-badge {
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: 3px;
+  font-weight: 600;
+}
+.unit1-badge { background: var(--gold-dim); color: var(--gold); }
+.unit2-badge { background: var(--teal-dim); color: var(--teal); }
+
+.topic-btn {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--muted);
+  text-align: left;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 13px;
+  line-height: 1.4;
+  transition: all 0.15s;
+  border-left: 2px solid transparent;
+}
+.topic-btn:hover { background: var(--bg3); color: var(--text); }
+.topic-btn.active { background: rgba(240,180,41,0.07); color: var(--text); border-left-color: var(--gold); }
+.topic-btn.active.unit2 { background: rgba(47,216,164,0.07); border-left-color: var(--teal); }
+
+.topic-icon { font-size: 14px; margin-top: 1px; flex-shrink: 0; }
+.topic-name { flex: 1; }
+.mastery-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 4px;
+  background: var(--border);
+}
+.mastery-dot.mastered { background: var(--gold); box-shadow: 0 0 6px var(--gold); }
+.mastery-dot.unit2.mastered { background: var(--teal); box-shadow: 0 0 6px var(--teal); }
+.mastery-dot.partial { background: var(--blue); }
+
+.sidebar-footer {
+  margin-top: auto;
+  padding: 12px 16px;
+  border-top: 1px solid var(--border);
+}
+.flashcard-btn-sidebar {
+  width: 100%;
+  padding: 10px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 13px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s;
+}
+.flashcard-btn-sidebar:hover { background: var(--gold-dim); border-color: var(--gold); color: var(--gold); }
+
+/* ===== MAIN AREA ===== */
+#main {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0;
+}
+#main::-webkit-scrollbar { width: 6px; }
+#main::-webkit-scrollbar-track { background: transparent; }
+#main::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+/* ===== DASHBOARD ===== */
+#dashboard {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 40px 40px 80px;
+}
+.dash-hero {
+  text-align: center;
+  padding: 40px 0 32px;
+}
+.dash-hero h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 32px;
+  color: var(--text);
+  line-height: 1.3;
+}
+.dash-hero h2 span { color: var(--gold); }
+.dash-hero p {
+  color: var(--muted);
+  margin-top: 12px;
+  font-size: 14px;
+}
+
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin: 32px 0;
+}
+.stat-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  text-align: center;
+}
+.stat-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  color: var(--gold);
+  line-height: 1;
+}
+.stat-label { font-size: 11px; color: var(--muted); margin-top: 4px; }
+
+.unit-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 24px;
+}
+.unit-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+.unit-card:hover { border-color: var(--gold); transform: translateY(-2px); }
+.unit-card.unit2:hover { border-color: var(--teal); }
+.unit-card-glow {
+  position: absolute;
+  top: -20px; right: -20px;
+  width: 100px; height: 100px;
+  border-radius: 50%;
+  filter: blur(30px);
+  opacity: 0.15;
+}
+.uc1 { background: var(--gold); }
+.uc2 { background: var(--teal); }
+.unit-card h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 16px;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+.unit-card p { font-size: 12px; color: var(--muted); }
+.unit-card-topics {
+  margin-top: 16px;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.mini-badge {
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: var(--bg3);
+  color: var(--muted);
+}
+
+/* ===== TOPIC VIEW ===== */
+#topic-view {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 32px 40px 80px;
+}
+
+.topic-header {
+  margin-bottom: 28px;
+}
+.topic-breadcrumb {
+  font-size: 11px;
+  color: var(--muted);
+  font-family: 'IBM Plex Mono', monospace;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.topic-breadcrumb span { cursor: pointer; }
+.topic-breadcrumb span:hover { color: var(--gold); }
+.topic-title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+.topic-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 26px;
+  color: var(--text);
+  line-height: 1.3;
+}
+.mastery-badge {
+  flex-shrink: 0;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 500;
+}
+.mb-locked { background: var(--bg3); color: var(--muted); border: 1px solid var(--border); }
+.mb-partial { background: rgba(88,166,255,0.15); color: var(--blue); border: 1px solid rgba(88,166,255,0.3); }
+.mb-mastered { background: var(--gold-dim); color: var(--gold); border: 1px solid rgba(240,180,41,0.3); }
+.mb-mastered.unit2 { background: var(--teal-dim); color: var(--teal); border: 1px solid rgba(47,216,164,0.3); }
+
+.topic-meta {
+  display: flex;
+  gap: 16px;
+  margin-top: 12px;
+  font-size: 12px;
+  color: var(--muted);
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+/* Content sections */
+.content-section {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px 28px;
+  margin-bottom: 16px;
+}
+.content-section h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  color: var(--gold);
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+.content-section.unit2 h3 { color: var(--teal); }
+
+.content-body { color: var(--text); line-height: 1.8; }
+.content-body p { margin-bottom: 12px; }
+.content-body strong { color: var(--gold); font-weight: 600; }
+.content-body.unit2 strong { color: var(--teal); }
+.content-body em { color: var(--blue); font-style: normal; font-family: 'IBM Plex Mono', monospace; font-size: 13px; }
+
+.formula-box {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--gold);
+  border-radius: 0 8px 8px 0;
+  padding: 14px 18px;
+  margin: 14px 0;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 13px;
+  color: var(--text);
+}
+.formula-box.unit2 { border-left-color: var(--teal); }
+.formula-box .label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.chem-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 14px 0;
+  font-size: 13px;
+}
+.chem-table th {
+  background: var(--bg3);
+  color: var(--muted);
+  font-weight: 500;
+  text-align: left;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.chem-table td {
+  padding: 7px 12px;
+  border: 1px solid var(--border);
+  font-family: 'IBM Plex Mono', monospace;
+}
+.chem-table tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+
+.highlight-box {
+  background: rgba(240,180,41,0.06);
+  border: 1px solid rgba(240,180,41,0.2);
+  border-radius: 8px;
+  padding: 14px 18px;
+  margin: 14px 0;
+}
+.highlight-box.unit2 { background: rgba(47,216,164,0.06); border-color: rgba(47,216,164,0.2); }
+.highlight-box .hb-title {
+  font-size: 11px;
+  font-family: 'IBM Plex Mono', monospace;
+  color: var(--gold);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 8px;
+}
+.highlight-box.unit2 .hb-title { color: var(--teal); }
+
+.bullet-list { list-style: none; padding: 0; margin: 10px 0; }
+.bullet-list li {
+  padding: 4px 0 4px 18px;
+  position: relative;
+  color: var(--text);
+  font-size: 14px;
+}
+.bullet-list li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: var(--gold);
+  font-size: 12px;
+}
+.bullet-list.unit2 li::before { color: var(--teal); }
+
+/* ===== QUIZ ===== */
+.quiz-section {
+  margin-top: 32px;
+}
+.quiz-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.quiz-header h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  color: var(--text);
+}
+.quiz-progress-dots {
+  display: flex;
+  gap: 6px;
+}
+.qdot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  transition: all 0.2s;
+}
+.qdot.answered { background: var(--blue); border-color: var(--blue); }
+.qdot.correct { background: var(--green); border-color: var(--green); }
+.qdot.wrong { background: var(--red); border-color: var(--red); }
+
+.quiz-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+}
+.quiz-q-num {
+  font-size: 11px;
+  font-family: 'IBM Plex Mono', monospace;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+.quiz-question {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 20px;
+  line-height: 1.6;
+  font-family: 'IBM Plex Sans', sans-serif;
+}
+.quiz-options { display: flex; flex-direction: column; gap: 8px; }
+.quiz-option {
+  padding: 12px 16px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 14px;
+  color: var(--muted);
+  text-align: left;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.quiz-option:hover:not(.disabled) { border-color: var(--gold); color: var(--text); background: var(--gold-dim); }
+.quiz-option.correct { background: rgba(86,211,100,0.1); border-color: var(--green); color: var(--green); }
+.quiz-option.wrong { background: var(--red-dim); border-color: var(--red); color: var(--red); }
+.quiz-option.disabled { cursor: not-allowed; }
+.opt-letter {
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-family: 'IBM Plex Mono', monospace;
+  flex-shrink: 0;
+  font-weight: 600;
+}
+.quiz-option.correct .opt-letter { background: var(--green); border-color: var(--green); color: var(--bg); }
+.quiz-option.wrong .opt-letter { background: var(--red); border-color: var(--red); color: var(--bg); }
+
+.explanation-box {
+  margin-top: 16px;
+  padding: 14px 18px;
+  background: rgba(88,166,255,0.06);
+  border: 1px solid rgba(88,166,255,0.2);
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.6;
+}
+.explanation-box .exp-label {
+  font-size: 10px;
+  font-family: 'IBM Plex Mono', monospace;
+  color: var(--blue);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 6px;
+}
+
+.quiz-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+}
+.btn-primary {
+  padding: 10px 20px;
+  background: var(--gold);
+  color: var(--bg);
+  border: none;
+  border-radius: 8px;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-primary:hover { background: #e6a817; transform: translateY(-1px); }
+.btn-primary.unit2 { background: var(--teal); }
+.btn-primary.unit2:hover { background: #26c493; }
+
+.btn-secondary {
+  padding: 10px 20px;
+  background: var(--bg3);
+  color: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-secondary:hover { color: var(--text); border-color: var(--muted); }
+
+/* Quiz Result */
+.quiz-result {
+  text-align: center;
+  padding: 32px;
+  background: var(--bg2);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+.result-score {
+  font-family: 'Playfair Display', serif;
+  font-size: 52px;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.rs-gold { color: var(--gold); }
+.rs-teal { color: var(--teal); }
+.rs-red { color: var(--red); }
+.result-label { color: var(--muted); font-size: 14px; margin-bottom: 20px; }
+.mastery-achieved {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 20px;
+  background: var(--gold-dim);
+  border: 1px solid rgba(240,180,41,0.3);
+  border-radius: 20px;
+  color: var(--gold);
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+.mastery-achieved.unit2 { background: var(--teal-dim); border-color: rgba(47,216,164,0.3); color: var(--teal); }
+
+/* ===== FLASHCARDS ===== */
+#flashcard-view {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 32px 40px 80px;
+}
+.fc-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+.fc-header h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 26px;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+.fc-header p { color: var(--muted); font-size: 13px; }
+
+.fc-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.fc-counter {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 13px;
+  color: var(--muted);
+  min-width: 80px;
+  text-align: center;
+}
+.fc-btn {
+  width: 36px; height: 36px;
+  border-radius: 8px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.fc-btn:hover { background: var(--bg3); color: var(--text); }
+
+.flashcard {
+  perspective: 1000px;
+  height: 280px;
+  cursor: pointer;
+}
+.fc-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.5s ease;
+}
+.fc-inner.flipped { transform: rotateY(180deg); }
+.fc-front, .fc-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  text-align: center;
+}
+.fc-front {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+}
+.fc-back {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  transform: rotateY(180deg);
+}
+
+.fc-tag {
+  font-size: 10px;
+  font-family: 'IBM Plex Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 16px;
+  padding: 3px 10px;
+  border-radius: 4px;
+}
+.fc-tag.u1 { background: var(--gold-dim); color: var(--gold); }
+.fc-tag.u2 { background: var(--teal-dim); color: var(--teal); }
+
+.fc-front .fc-text {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  color: var(--text);
+  line-height: 1.5;
+}
+.fc-back .fc-text {
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.7;
+}
+.fc-back .fc-text strong { color: var(--gold); }
+
+.fc-hint { font-size: 11px; color: var(--muted); margin-top: 16px; }
+
+.fc-progress-row {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+.fc-pip {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--border);
+  transition: all 0.2s;
+}
+.fc-pip.current { background: var(--gold); transform: scale(1.4); }
+.fc-pip.seen { background: var(--muted); }
+
+/* ===== UTILITY ===== */
+.hidden { display: none !important; }
+.view { display: block; }
+
+.divider {
+  height: 1px;
+  background: var(--border);
+  margin: 24px 0;
+}
+
+sub, sup { font-size: 0.75em; }
+
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--muted);
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: 'IBM Plex Mono', monospace;
+  margin-bottom: 24px;
+}
+.back-btn:hover { color: var(--text); border-color: var(--muted); }
+
+.next-topic-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 24px;
+  padding: 16px 20px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: var(--text);
+}
+.next-topic-btn:hover { border-color: var(--gold); background: var(--gold-dim); }
+.nt-label { font-size: 11px; color: var(--muted); font-family: 'IBM Plex Mono', monospace; }
+.nt-title { font-size: 14px; font-weight: 500; margin-top: 3px; }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav id="sidebar">
+  <div class="sidebar-header">
+    <h1>DU Chemistry<br>Mastery</h1>
+    <p>Sri Venkateswara College · Life Sci</p>
+  </div>
+  <div class="progress-bar-wrap">
+    <div class="progress-label">
+      <span>Overall Progress</span>
+      <span id="progress-pct">0%</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+  </div>
+  <div id="topic-list"></div>
+  <div class="sidebar-footer">
+    <button class="flashcard-btn-sidebar" onclick="showFlashcards()">🃏 Flashcard Review</button>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main id="main">
+  <!-- DASHBOARD -->
+  <div id="dashboard" class="view">
+    <div class="dash-hero">
+      <h2>Master Your <span>Chemistry</span> Syllabus</h2>
+      <p>Sri Venkateswara College · Delhi University · B.Sc. Life Sciences · Semester Exam Prep</p>
+    </div>
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-num" id="dash-total">12</div><div class="stat-label">Total Topics</div></div>
+      <div class="stat-card"><div class="stat-num" id="dash-mastered">0</div><div class="stat-label">Mastered</div></div>
+      <div class="stat-card"><div class="stat-num">60</div><div class="stat-label">Practice Questions</div></div>
+      <div class="stat-card"><div class="stat-num">40</div><div class="stat-label">Flashcards</div></div>
+    </div>
+    <div class="unit-cards">
+      <div class="unit-card" onclick="goToTopic(0)">
+        <div class="unit-card-glow uc1"></div>
+        <h3>Unit I: Chemical Bonding</h3>
+        <p>18 Hours · 7 Topics · Ionic, Covalent & MO Theory</p>
+        <div class="unit-card-topics">
+          <span class="mini-badge">Ionic Bonding</span>
+          <span class="mini-badge">Born-Haber</span>
+          <span class="mini-badge">Fajan's Rules</span>
+          <span class="mini-badge">VSEPR</span>
+          <span class="mini-badge">MO Theory</span>
+          <span class="mini-badge">+2 more</span>
+        </div>
+      </div>
+      <div class="unit-card unit2" onclick="goToTopic(7)">
+        <div class="unit-card-glow uc2"></div>
+        <h3>Unit II: Biological Systems</h3>
+        <p>12 Hours · 5 Topics · Metal Ions & Toxicology</p>
+        <div class="unit-card-topics">
+          <span class="mini-badge">Na⁺/K⁺ Pump</span>
+          <span class="mini-badge">Ca²⁺ & Mg²⁺</span>
+          <span class="mini-badge">Iron Storage</span>
+          <span class="mini-badge">Toxic Metals</span>
+          <span class="mini-badge">+1 more</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOPIC VIEW -->
+  <div id="topic-view" class="hidden"></div>
+
+  <!-- FLASHCARD VIEW -->
+  <div id="flashcard-view" class="hidden"></div>
+</main>
+
+<script>
+// =====================================================================
+// DATA: FULL CURRICULUM
+// =====================================================================
+
+const TOPICS = [
+
+// ====== UNIT 1 ======
+
+{
+  id: 0, unit: 1,
+  icon: "⚡",
+  title: "Ionic Bonding: Characteristics & Lattice Enthalpy",
+  duration: "~2.5 hrs",
+  pyqTag: "PYQ Favourite",
+  sections: [
+    {
+      heading: "Nature & Formation of Ionic Bonds",
+      body: `<p>Ionic bonds arise through the <strong>complete transfer of one or more electrons</strong> from an electropositive metal to an electronegative non-metal. The result is a cation (positive ion) and an anion (negative ion) held together by electrostatic (Coulombic) attraction.</p>
+      <div class="highlight-box"><div class="hb-title">⚡ Formation Example</div>
+      <em>Na(g) + ½Cl₂(g) → Na⁺Cl⁻(s)</em><br><br>
+      Na loses its 3s¹ electron (IE₁ = 496 kJ/mol) → Na⁺<br>
+      Cl gains that electron (EA = −349 kJ/mol) → Cl⁻<br>
+      But the net formation is exothermic because of the large lattice energy released.
+      </div>
+      <p>Ionic bonding is most favoured when the ionization energy of the metal is low and the electron affinity of the non-metal is high — conditions best met between Group 1/2 metals and Group 16/17 non-metals.</p>`,
+    },
+    {
+      heading: "Characteristics of Ionic Compounds",
+      body: `<ul class="bullet-list">
+      <li><strong>High Melting & Boiling Points:</strong> Strong electrostatic forces throughout the crystal lattice require enormous energy to overcome. NaCl melts at 801°C; MgO at 2852°C (the higher charge magnifies the force).</li>
+      <li><strong>Electrical Conductivity:</strong> Solid ionic compounds are poor conductors (ions are fixed in the lattice). In the molten state or in aqueous solution, ions are free to move → conduct electricity. This is a definitive test for ionic character.</li>
+      <li><strong>Brittleness:</strong> When stress is applied, crystal planes slip. Like ions (e.g., Na⁺ next to Na⁺) come into proximity → repulsion shatters the crystal. Compare to metals, where atoms remain equivalent after slipping.</li>
+      <li><strong>Crystalline Structure:</strong> Ions pack into regular three-dimensional arrays (rock salt, fluorite, zinc blende, cesium chloride etc.) to minimize energy. The structure adopted depends on the radius ratio r⁺/r⁻.</li>
+      <li><strong>Solubility in Polar Solvents:</strong> Water molecules (with their dipole) can stabilize ions via ion-dipole interactions, potentially dissolving the lattice if hydration enthalpy ≥ lattice enthalpy.</li>
+      </ul>`,
+    },
+    {
+      heading: "Lattice Enthalpy (ΔH_L)",
+      body: `<p><strong>Definition:</strong> The lattice enthalpy is the enthalpy change when <em>one mole of an ionic solid is separated into its constituent gaseous ions at infinite distance</em> under standard conditions.</p>
+      <div class="formula-box"><div class="label">Standard Notation</div>NaCl(s) → Na⁺(g) + Cl⁻(g) &nbsp;&nbsp; ΔH_L = +787 kJ/mol<br>
+      MgO(s) → Mg²⁺(g) + O²⁻(g) &nbsp;&nbsp; ΔH_L = +3791 kJ/mol</div>
+      <p>Always <strong>positive</strong> (endothermic) when written as dissociation, because you are breaking bonds.</p>
+      <p><strong>Factors Determining Lattice Enthalpy:</strong> Based on Coulomb's Law — the lattice energy U ∝ (z⁺ × z⁻) / r₀ where z⁺, z⁻ are ionic charges and r₀ is the interionic distance (sum of ionic radii).</p>
+      <table class="chem-table"><thead><tr><th>Compound</th><th>Charges</th><th>ΔH_L (kJ/mol)</th><th>Trend</th></tr></thead>
+      <tbody>
+      <tr><td>LiF</td><td>1+/1−</td><td>+1037</td><td>Small ions</td></tr>
+      <tr><td>NaF</td><td>1+/1−</td><td>+923</td><td>Larger Na⁺</td></tr>
+      <tr><td>NaCl</td><td>1+/1−</td><td>+787</td><td>Larger Cl⁻</td></tr>
+      <tr><td>KCl</td><td>1+/1−</td><td>+717</td><td>Largest</td></tr>
+      <tr><td>MgO</td><td>2+/2−</td><td>+3791</td><td>High charge</td></tr>
+      <tr><td>CaO</td><td>2+/2−</td><td>+3401</td><td>Larger Ca²⁺</td></tr>
+      </tbody></table>`,
+    },
+    {
+      heading: "Solvation Enthalpy & Solubility",
+      body: `<p><strong>Solvation (Hydration) Enthalpy</strong> is the energy released when one mole of gaseous ions is surrounded by solvent molecules. It is always <strong>negative (exothermic)</strong>.</p>
+      <div class="formula-box"><div class="label">Relationship</div>ΔH_solution = ΔH_Lattice + ΔH_solvation<br>
+      (using lattice dissociation = positive; solvation = negative)</div>
+      <ul class="bullet-list">
+      <li>If |ΔH_solvation| > ΔH_Lattice → exothermic dissolution → generally more soluble</li>
+      <li>If ΔH_Lattice > |ΔH_solvation| → dissolution can still occur if ΔS is large enough (entropy driven)</li>
+      <li><strong>Li⁺</strong> has very high hydration enthalpy (−520 kJ/mol) due to its small size and high charge density. Despite small size (which normally means high lattice enthalpy), lithium salts are often more soluble than sodium salts because hydration enthalpy dominates.</li>
+      <li><strong>Sulfates:</strong> BaSO₄ is insoluble because Ba²⁺ has low hydration enthalpy (large ion) but BaSO₄ has very high lattice enthalpy. MgSO₄ is soluble — Mg²⁺ has very high hydration enthalpy.</li>
+      </ul>`,
+    }
+  ],
+  questions: [
+    {
+      q: "Which of the following ionic compounds has the HIGHEST lattice enthalpy?",
+      opts: ["NaCl", "KCl", "MgO", "CaF₂"],
+      ans: 2,
+      exp: "MgO has ~3791 kJ/mol lattice enthalpy because both Mg²⁺ and O²⁻ carry ±2 charges. Coulomb's law: U ∝ z⁺×z⁻, so a 2+/2− system has roughly 4× the electrostatic interaction of a 1+/1− system with similar ionic radii."
+    },
+    {
+      q: "An ionic compound will have a higher lattice enthalpy if its constituent ions are:",
+      opts: ["Large and singly charged", "Small and singly charged", "Small and multiply charged", "Large and multiply charged"],
+      ans: 2,
+      exp: "Lattice enthalpy ∝ z⁺×z⁻ / r₀. Small ions bring opposite charges closer (smaller r₀), and higher charges (z) increase the electrostatic force. Both effects together (small + multiply charged) give maximum lattice enthalpy. Example: MgO > CaO (same charges, Mg²⁺ smaller); MgO >> NaCl (larger charges)."
+    },
+    {
+      q: "Solvation enthalpy is always:",
+      opts: ["Positive (endothermic)", "Negative (exothermic)", "Zero for all ions", "Positive for cations, negative for anions"],
+      ans: 1,
+      exp: "Solvation enthalpy is always negative (exothermic). Energy is released when ion-dipole interactions form between the ion and solvent molecules. Both cations and anions are stabilized by surrounding solvent molecules, releasing energy in both cases."
+    },
+    {
+      q: "LiF is sparingly soluble despite both Li⁺ and F⁻ being very small. The reason is:",
+      opts: [
+        "The hydration enthalpy of both ions is too small",
+        "The lattice enthalpy exceeds the sum of hydration enthalpies",
+        "Li⁺ is too large to be hydrated",
+        "LiF is an ionic compound and hence insoluble in water"
+      ],
+      ans: 1,
+      exp: "LiF's small ions create an extremely high lattice enthalpy (~1037 kJ/mol). Although Li⁺ has high hydration enthalpy, the sum of hydration enthalpies of Li⁺ and F⁻ does not sufficiently compensate for the very high lattice energy, resulting in limited solubility."
+    },
+    {
+      q: "Which property of ionic compounds is directly explained by ion mobility?",
+      opts: ["Brittleness", "High melting point", "Electrical conductivity in molten state", "Crystalline nature"],
+      ans: 2,
+      exp: "Ionic compounds conduct electricity when molten (or in solution) because the ions become free to move and carry charge. In the solid state, ions are fixed in the lattice and cannot move, so the solid is a poor conductor. Conductivity directly requires mobile ions."
+    }
+  ]
+},
+
+{
+  id: 1, unit: 1,
+  icon: "🔄",
+  title: "Born-Landé Equation & Born-Haber Cycle",
+  duration: "~2 hrs",
+  pyqTag: "High Yield",
+  sections: [
+    {
+      heading: "The Born-Landé Equation",
+      body: `<p>The Born-Landé equation provides a <strong>theoretical calculation of lattice enthalpy</strong> based on ionic charges, ionic radii, and crystal structure. It is more accurate than simple Coulombic models because it also accounts for the repulsive forces between electron clouds at short range.</p>
+      <div class="formula-box"><div class="label">Born-Landé Equation</div>U = −(Nₐ × M × z⁺ × z⁻ × e²) / (4πε₀r₀) × (1 − 1/n)<br><br>
+      Where:<br>
+      Nₐ = Avogadro's number (6.022 × 10²³)<br>
+      M = Madelung constant (depends on crystal structure)<br>
+      z⁺, z⁻ = charges on cation and anion<br>
+      e = electron charge (1.6 × 10⁻¹⁹ C)<br>
+      ε₀ = permittivity of free space (8.854 × 10⁻¹² C²/Nm²)<br>
+      r₀ = equilibrium interionic distance<br>
+      n = Born exponent (measure of electron cloud compressibility)</div>`,
+    },
+    {
+      heading: "Madelung Constant & Born Exponent",
+      body: `<p><strong>Madelung Constant (M):</strong> This is a geometric factor that accounts for ALL the electrostatic interactions in the crystal lattice (not just nearest-neighbour attractions, but also next-nearest repulsions, etc.). It depends on the crystal structure.</p>
+      <table class="chem-table"><thead><tr><th>Crystal Structure</th><th>Example</th><th>Madelung Constant</th></tr></thead>
+      <tbody>
+      <tr><td>Rock Salt (NaCl)</td><td>NaCl, KBr, MgO</td><td>1.748</td></tr>
+      <tr><td>Cesium Chloride</td><td>CsCl</td><td>1.763</td></tr>
+      <tr><td>Zinc Blende</td><td>ZnS</td><td>1.638</td></tr>
+      <tr><td>Fluorite</td><td>CaF₂</td><td>2.519</td></tr>
+      <tr><td>Wurtzite</td><td>ZnS</td><td>1.641</td></tr>
+      </tbody></table>
+      <p><strong>Born Exponent (n):</strong> Accounts for the short-range quantum mechanical repulsion between overlapping electron clouds. It is obtained from the compressibility of the crystal.</p>
+      <table class="chem-table"><thead><tr><th>Ion Electronic Configuration</th><th>Example</th><th>n value</th></tr></thead>
+      <tbody>
+      <tr><td>He (1s²)</td><td>Li⁺, H⁻</td><td>5</td></tr>
+      <tr><td>Ne (2s²2p⁶)</td><td>Na⁺, F⁻, O²⁻</td><td>7</td></tr>
+      <tr><td>Ar (3s²3p⁶)</td><td>K⁺, Cl⁻, Ca²⁺</td><td>9</td></tr>
+      <tr><td>Kr (4s²4p⁶)</td><td>Rb⁺, Br⁻</td><td>10</td></tr>
+      <tr><td>Xe (5s²5p⁶)</td><td>Cs⁺, I⁻</td><td>12</td></tr>
+      </tbody></table>
+      <p>For compounds with different electronic configurations, use the average: n(NaCl) = (7+9)/2 = 8</p>`,
+    },
+    {
+      heading: "Born-Haber Cycle",
+      body: `<p>The Born-Haber cycle is an application of <strong>Hess's Law</strong> — the enthalpy of formation of an ionic compound can be broken down into a series of measurable steps that form a closed thermodynamic cycle. This allows experimental determination of lattice enthalpy (which cannot be measured directly).</p>
+      <div class="highlight-box"><div class="hb-title">🔄 Steps for NaCl Formation</div>
+      <ol style="margin-left:16px; line-height:2">
+      <li>Sublimation of Na(s): Na(s) → Na(g) &nbsp;&nbsp; ΔH_sub = +108 kJ/mol</li>
+      <li>Dissociation of Cl₂: ½Cl₂(g) → Cl(g) &nbsp;&nbsp; ½ΔH_diss = +121 kJ/mol</li>
+      <li>Ionization of Na: Na(g) → Na⁺(g) + e⁻ &nbsp;&nbsp; IE₁ = +496 kJ/mol</li>
+      <li>Electron gain by Cl: Cl(g) + e⁻ → Cl⁻(g) &nbsp;&nbsp; EA = −349 kJ/mol</li>
+      <li>Formation of NaCl lattice: Na⁺(g) + Cl⁻(g) → NaCl(s) &nbsp;&nbsp; −ΔH_L = ?</li>
+      </ol>
+      </div>
+      <div class="formula-box"><div class="label">Hess's Law Applied</div>ΔH_f(NaCl) = ΔH_sub + ½ΔH_diss + IE + EA + (−ΔH_L)<br>
+      −411 = 108 + 121 + 496 + (−349) + (−ΔH_L)<br>
+      ΔH_L = 108 + 121 + 496 − 349 + 411 = <strong>+787 kJ/mol ✓</strong></div>
+      <p><strong>Applications of Born-Haber Cycle:</strong></p>
+      <ul class="bullet-list">
+      <li>Calculating lattice enthalpies that cannot be measured directly</li>
+      <li>Determining electron affinities (particularly for O²⁻ and S²⁻ which require second EA)</li>
+      <li>Predicting whether formation of ionic compounds with unusual oxidation states is feasible (e.g., NaCl₂)</li>
+      <li>Understanding why CaCl₂ forms preferentially over CaCl — the extra ionization energy for Ca→Ca²⁺ is more than compensated by the much higher lattice enthalpy of Ca²⁺Cl₂</li>
+      </ul>`,
+    }
+  ],
+  questions: [
+    {
+      q: "In the Born-Haber cycle for NaCl, which step has the LARGEST magnitude positive enthalpy change?",
+      opts: ["Sublimation of Na", "Dissociation of Cl₂", "First ionization energy of Na", "Lattice enthalpy (dissociation)"],
+      ans: 3,
+      exp: "The lattice enthalpy (dissociation, +787 kJ/mol) is by far the largest positive term. Ionization energy of Na is +496, sublimation is +108, and ½ dissociation of Cl₂ is +121. The large lattice enthalpy explains why ionic compounds are generally stable despite the energy cost of ionization."
+    },
+    {
+      q: "The Madelung constant in the Born-Landé equation accounts for:",
+      opts: [
+        "The repulsion between electron clouds at short distances",
+        "The total electrostatic interactions throughout the entire crystal lattice",
+        "The Born exponent correction",
+        "The solvation enthalpy of ions"
+      ],
+      ans: 1,
+      exp: "The Madelung constant (M) is a geometric factor that sums up ALL electrostatic interactions in the crystal lattice — not just nearest-neighbour attractions. It includes attractions between like-charged ions at larger distances that partially cancel the repulsions, and is specific to the crystal structure type."
+    },
+    {
+      q: "Why does NaCl₂ not form despite Na theoretically being able to have 2+ charge?",
+      opts: [
+        "Na has only one electron to donate",
+        "The extremely high IE₂ of Na is not compensated by the higher lattice enthalpy of NaCl₂",
+        "Cl cannot accept two electrons",
+        "NaCl₂ would have too small a lattice"
+      ],
+      ans: 1,
+      exp: "Na's IE₂ (+4562 kJ/mol) is enormously larger than IE₁ (+496 kJ/mol) because IE₂ requires removing a core electron from the stable 2p⁶ neon configuration. While NaCl₂ would have a higher lattice enthalpy than NaCl, the lattice enthalpy increase does not come close to compensating for the huge IE₂ of sodium."
+    },
+    {
+      q: "The term (1 − 1/n) in the Born-Landé equation represents:",
+      opts: [
+        "Contribution of the Madelung constant",
+        "The fraction of lattice energy due to ionic charges",
+        "The correction for short-range repulsion between electron clouds",
+        "The coordination number effect"
+      ],
+      ans: 2,
+      exp: "The term (1 − 1/n) is the Born correction factor. It reduces the calculated lattice energy to account for the short-range repulsive interactions between overlapping electron clouds when ions approach each other. Without this correction, the Coulombic model would overestimate the lattice energy. As n increases, (1 − 1/n) approaches 1."
+    },
+    {
+      q: "For a compound AB with rock salt structure, if the charges are changed to 2+/2− (keeping r₀ the same), the Born-Landé lattice energy would increase by a factor of approximately:",
+      opts: ["2×", "4×", "8×", "16×"],
+      ans: 1,
+      exp: "In Born-Landé: U ∝ z⁺ × z⁻. Going from 1+/1− to 2+/2−: the product z⁺×z⁻ changes from 1×1=1 to 2×2=4. So the lattice energy increases approximately 4×. This is why MgO (3791 kJ/mol) is roughly 4× that of NaCl (787 kJ/mol) for similarly sized ions."
+    }
+  ]
+},
+
+{
+  id: 2, unit: 1,
+  icon: "🎭",
+  title: "Fajan's Rules & Polarization of Ions",
+  duration: "~1.5 hrs",
+  pyqTag: "PYQ Favourite",
+  sections: [
+    {
+      heading: "Polarizing Power & Polarizability",
+      body: `<p>Ionic compounds are not always 100% ionic in character. The cation can distort the electron cloud of the anion — a phenomenon called <strong>polarization</strong>. This induces partial covalent character into the bond.</p>
+      <ul class="bullet-list">
+      <li><strong>Polarizing Power</strong> is the ability of a CATION to distort the electron cloud of an anion. Higher polarizing power = more distortion = more covalent character.</li>
+      <li><strong>Polarizability</strong> is the ease with which the electron cloud of an ANION can be distorted by a cation.</li>
+      </ul>
+      <div class="highlight-box"><div class="hb-title">Polarizing Power depends on:</div>
+      High charge on cation (z⁺) → high polarizing power<br>
+      Small size of cation → high charge density → high polarizing power<br>
+      18-electron configuration (d-block or pseudo-noble gas) > 8-electron noble gas configuration → higher polarizing power due to poorer nuclear shielding
+      </div>
+      <div class="highlight-box"><div class="hb-title">Polarizability depends on:</div>
+      Large size of anion → electron cloud is more diffuse and loosely held → easily distorted<br>
+      High charge on anion → more electrons → more polarizable<br>
+      Example: I⁻ > Br⁻ > Cl⁻ > F⁻ (polarizability decreases up the group)
+      </div>`,
+    },
+    {
+      heading: "Fajan's Rules",
+      body: `<p>Fajan's rules (1923) predict the degree of covalent character in a nominally ionic compound. <strong>Covalent character increases when:</strong></p>
+      <table class="chem-table"><thead><tr><th>Rule</th><th>Condition</th><th>Example (more covalent)</th></tr></thead>
+      <tbody>
+      <tr><td>1</td><td>Small, highly charged cation (high polarizing power)</td><td>Al³⁺ > Mg²⁺ > Na⁺; AlCl₃ more covalent than NaCl</td></tr>
+      <tr><td>2</td><td>Large, highly charged anion (high polarizability)</td><td>AlI₃ more covalent than AlF₃; I⁻ more polarizable than F⁻</td></tr>
+      <tr><td>3</td><td>Cation with 18-electron config (d¹⁰s² or d¹⁰)</td><td>CuCl more covalent than NaCl despite similar radii; Cu⁺ has 3d¹⁰ → poor shielding</td></tr>
+      </tbody></table>
+      <div class="highlight-box"><div class="hb-title">💡 Key Application: Why AgCl is less soluble than NaCl</div>
+      Ag⁺ has a d¹⁰ configuration (18-electron). Despite being similar in size to Na⁺, Ag⁺ has much higher polarizing power because the d electrons poorly shield the nuclear charge. This gives AgCl significant covalent character → less soluble in water than NaCl which is largely ionic.
+      </div>
+      <p><strong>Beryllium anomaly:</strong> Be²⁺ is extremely small and highly charged → enormous polarizing power → BeCl₂ is largely covalent (dissolves in organic solvents, has low melting point).</p>
+      <p><strong>Bismuth(III) iodide anomaly:</strong> BiI₃ — both Bi³⁺ (large charge + d¹⁰s² pseudo-noble gas) and I⁻ (largest, most polarizable halide) conspire to make BiI₃ essentially covalent.</p>`,
+    }
+  ],
+  questions: [
+    {
+      q: "Which cation has the HIGHEST polarizing power?",
+      opts: ["Na⁺ (r = 116 pm)", "Mg²⁺ (r = 86 pm)", "Al³⁺ (r = 67 pm)", "K⁺ (r = 152 pm)"],
+      ans: 2,
+      exp: "Al³⁺ has the highest polarizing power: charge density = z/r = 3/67 = 0.045. Compare with Mg²⁺: 2/86 = 0.023, Na⁺: 1/116 = 0.009. Higher charge (3+) and smallest radius make Al³⁺ the strongest polarizer. This is why AlCl₃ has significant covalent character (it's an electron deficient Lewis acid)."
+    },
+    {
+      q: "According to Fajan's rules, which compound has the MOST covalent character?",
+      opts: ["NaF", "NaI", "AlF₃", "AlI₃"],
+      ans: 3,
+      exp: "AlI₃ has maximum covalent character: Al³⁺ has very high polarizing power (small, triply charged) AND I⁻ has very high polarizability (largest halide, most easily distorted electron cloud). Fajan's rules say covalent character increases with (1) highly charged small cation and (2) large highly charged anion."
+    },
+    {
+      q: "CuCl is more covalent than NaCl despite Cu⁺ and Na⁺ having similar ionic radii. This is because Cu⁺:",
+      opts: [
+        "Has a larger ionic radius",
+        "Has 18-electron (d¹⁰) configuration with poor shielding → higher polarizing power",
+        "Has lower electronegativity than Na",
+        "Has higher ionization energy than Na"
+      ],
+      ans: 1,
+      exp: "Cu⁺ has electron configuration [Ar]3d¹⁰ — the 18-electron configuration. The d electrons provide poor shielding compared to noble gas (8-electron) configuration of Na⁺ ([Ne]). This means the effective nuclear charge felt by the anion's electrons is higher → more distortion → more covalent character in CuCl vs NaCl."
+    },
+    {
+      q: "Which anion is MOST polarizable?",
+      opts: ["F⁻", "Cl⁻", "Br⁻", "I⁻"],
+      ans: 3,
+      exp: "I⁻ is the most polarizable halide. As we go down Group 17, the anions become larger and have more electron shells. The outer electrons are farther from the nucleus, less tightly held, and more easily distorted by an external cation's electric field. Polarizability: I⁻ > Br⁻ > Cl⁻ > F⁻."
+    },
+    {
+      q: "Which of the following is FALSE about a highly polarized ion pair?",
+      opts: [
+        "It has significant covalent character",
+        "It has lower melting point than a purely ionic compound",
+        "It dissolves better in non-polar solvents",
+        "It always has higher lattice enthalpy than ionic compounds"
+      ],
+      ans: 3,
+      exp: "A highly polarized (partially covalent) compound does NOT necessarily have higher lattice enthalpy. In fact, highly covalent compounds often have lower melting points, dissolve in non-polar solvents, and cannot be treated with the simple ionic lattice energy model. Higher lattice enthalpy is associated with purely ionic, highly charged, small-ion compounds, not with covalent character."
+    }
+  ]
+},
+
+{
+  id: 3, unit: 1,
+  icon: "🎯",
+  title: "Dipole Moment, Bond Moment & % Ionic Character",
+  duration: "~1.5 hrs",
+  pyqTag: "Calculation Topic",
+  sections: [
+    {
+      heading: "Bond Moment & Dipole Moment",
+      body: `<p>When two atoms form a covalent bond and one is more electronegative than the other, the electron density is unsymmetrically distributed — creating a <strong>bond dipole moment (μ)</strong>.</p>
+      <div class="formula-box"><div class="label">Dipole Moment Formula</div>μ = q × d<br><br>
+      Where:<br>
+      q = magnitude of partial charge (in Coulombs, C)<br>
+      d = bond length (in metres, m)<br>
+      Unit: Debye (D) = 3.336 × 10⁻³⁰ C·m</div>
+      <p><strong>Bond moment</strong> is the dipole moment of an individual bond. In polyatomic molecules, the <strong>molecular dipole moment</strong> is the vector sum of all individual bond moments.</p>
+      <div class="highlight-box"><div class="hb-title">🎯 Important Consequence: Zero vs Non-Zero Dipole</div>
+      CO₂ — linear, two C=O bond moments cancel → μ = 0 (non-polar)<br>
+      H₂O — bent, two O-H bond moments do NOT cancel → μ = 1.85 D (polar)<br>
+      BF₃ — trigonal planar, all three B-F bond moments cancel → μ = 0<br>
+      NH₃ — pyramidal, N-H bond moments + lone pair effect → μ = 1.49 D
+      </div>
+      <p><strong>Lone pair contribution:</strong> Lone pairs on the central atom act as dipoles pointing away from the nucleus. In NH₃, the lone pair points opposite to the bond axis, adding to the overall dipole. In NF₃, lone pair and bond moments partially oppose each other, giving NF₃ a smaller dipole than NH₃.</p>`,
+    },
+    {
+      heading: "Percentage Ionic Character",
+      body: `<p>No real bond is perfectly covalent or perfectly ionic — all bonds lie on a spectrum. The <strong>percentage ionic character</strong> tells us how close a bond is to the ionic extreme.</p>
+      <div class="formula-box"><div class="label">% Ionic Character (Experimental)</div>% ionic = (μ_observed / μ_100%ionic) × 100<br><br>
+      μ_100%ionic = e × d (assuming full unit charge separation over bond length d)</div>
+      <div class="highlight-box"><div class="hb-title">📊 Example: HCl</div>
+      Bond length d = 127.4 pm = 127.4 × 10⁻¹² m<br>
+      μ_100% ionic = 1.6×10⁻¹⁹ × 127.4×10⁻¹² = 2.038×10⁻²⁹ C·m = 6.11 D<br>
+      μ_observed (HCl) = 1.07 D<br>
+      % ionic character = (1.07/6.11) × 100 = 17.5%
+      </div>
+      <p><strong>Hanney-Smith Equation</strong> gives % ionic character from electronegativity difference (Δχ):</p>
+      <div class="formula-box"><div class="label">Hanney-Smith Equation</div>% ionic = 16(Δχ) + 3.5(Δχ)²<br>
+      where Δχ = |χ_A − χ_B| (Pauling electronegativities)</div>
+      <table class="chem-table"><thead><tr><th>Bond</th><th>Δχ</th><th>% Ionic character</th></tr></thead>
+      <tbody>
+      <tr><td>H-F</td><td>1.9</td><td>~43%</td></tr>
+      <tr><td>H-Cl</td><td>0.9</td><td>~17%</td></tr>
+      <tr><td>H-Br</td><td>0.7</td><td>~12%</td></tr>
+      <tr><td>H-I</td><td>0.4</td><td>~4%</td></tr>
+      <tr><td>C-H</td><td>0.4</td><td>~4%</td></tr>
+      </tbody></table>`,
+    }
+  ],
+  questions: [
+    {
+      q: "CO₂ has two polar C=O bonds but zero overall dipole moment because:",
+      opts: [
+        "C=O bonds are non-polar",
+        "The bond moments are equal and opposite, cancelling in the linear geometry",
+        "C and O have identical electronegativities",
+        "CO₂ has sp³ hybridization"
+      ],
+      ans: 1,
+      exp: "CO₂ is linear (sp hybridization). The two C=O bond moments point in exactly opposite directions (180° angle). Since dipole moment is a vector, these two equal and opposite vectors sum to zero. Geometry is crucial — even when individual bonds are polar, the molecular geometry can cancel them."
+    },
+    {
+      q: "The dipole moment of NH₃ (1.49 D) is LARGER than that of NF₃ (0.24 D) even though F is more electronegative than H. This is because:",
+      opts: [
+        "N-H bond is longer than N-F bond",
+        "In NH₃, bond moments and lone pair moment reinforce each other; in NF₃ they oppose each other",
+        "NH₃ has sp² hybridization and NF₃ has sp³",
+        "F is smaller than H so NF₃ moments cancel"
+      ],
+      ans: 1,
+      exp: "In NH₃: N is more electronegative than H, so bond moments point toward N (center). The lone pair moment also points away from N (downward). Both add constructively → large μ. In NF₃: F is more electronegative than N, so bond moments point away from N (outward). Lone pair moment points toward N. These oppose the bond moments → small net μ. This is a classic DU exam question!"
+    },
+    {
+      q: "If the observed dipole moment of HF is 1.91 D and bond length is 91.7 pm, the % ionic character of HF is approximately (e = 1.6×10⁻¹⁹ C, 1D = 3.336×10⁻³⁰ C·m):",
+      opts: ["~17%", "~43%", "~60%", "~35%"],
+      ans: 1,
+      exp: "μ_100% ionic = e×d = 1.6×10⁻¹⁹ × 91.7×10⁻¹² = 1.467×10⁻²⁹ C·m = 4.40 D. % ionic = (1.91/4.40)×100 = 43.4%. HF has highest ionic character among hydrogen halides due to the large Δχ between H (2.2) and F (4.0)."
+    },
+    {
+      q: "Which of the following molecules has a NON-ZERO dipole moment?",
+      opts: ["BCl₃ (trigonal planar)", "CCl₄ (tetrahedral)", "SF₆ (octahedral)", "CHCl₃ (tetrahedral)"],
+      ans: 3,
+      exp: "CHCl₃ (chloroform) is tetrahedral but with one H and three Cl atoms. This asymmetric substitution means the three C-Cl bond moments do NOT fully cancel the C-H bond moment. The result is a net dipole moment (~1.15 D). In BCl₃, CCl₄, and SF₆, the geometry ensures all bond moments cancel due to perfect symmetry."
+    },
+    {
+      q: "Using Hanney-Smith equation, if Δχ = 1.0, the % ionic character is approximately:",
+      opts: ["16%", "19.5%", "22%", "35%"],
+      ans: 1,
+      exp: "Using % ionic = 16(Δχ) + 3.5(Δχ)²: = 16(1.0) + 3.5(1.0)² = 16 + 3.5 = 19.5%. Note: This is an approximation and works best for simple diatomic molecules. The equation shows both a linear term (16Δχ) and a small quadratic correction (3.5Δχ²)."
+    }
+  ]
+},
+
+{
+  id: 4, unit: 1,
+  icon: "🔬",
+  title: "Covalent Bonding: VB Theory, Hybridization & VSEPR",
+  duration: "~3 hrs",
+  pyqTag: "Core Topic",
+  sections: [
+    {
+      heading: "Valence Bond (VB) Theory",
+      body: `<p>The Valence Bond theory (Heitler & London, 1927; Pauling, 1930s) describes covalent bonds as the <strong>overlap of atomic orbitals from two atoms</strong>. The greater the overlap, the stronger the bond.</p>
+      <ul class="bullet-list">
+      <li><strong>σ (sigma) bond:</strong> Formed by head-on (end-to-end) overlap of orbitals along the internuclear axis. Can rotate freely. Stronger than π bonds in the same molecule. Examples: s-s (H₂), s-p (HF), p-p (Cl₂ axial), sp-sp (C≡C framework)</li>
+      <li><strong>π (pi) bond:</strong> Formed by lateral (sideways) overlap of p-orbitals perpendicular to the internuclear axis. Has a nodal plane containing the internuclear axis. π bonds restrict rotation → cis-trans isomerism. Weaker than σ bonds.</li>
+      <li>Single bond = 1σ; Double bond = 1σ + 1π; Triple bond = 1σ + 2π</li>
+      </ul>`,
+    },
+    {
+      heading: "Hybridization",
+      body: `<p>Hybridization is the mathematical mixing of atomic orbitals on the SAME atom to produce a new set of equivalent hybrid orbitals, oriented to minimize electron repulsion. Pure AOs do not explain geometry of molecules like CH₄ (109.5°) or BeCl₂ (180°).</p>
+      <table class="chem-table"><thead><tr><th>Type</th><th>Orbitals Mixed</th><th>Geometry</th><th>Angle</th><th>Example</th></tr></thead>
+      <tbody>
+      <tr><td>sp</td><td>1s + 1p</td><td>Linear</td><td>180°</td><td>BeCl₂, C₂H₂, CO₂</td></tr>
+      <tr><td>sp²</td><td>1s + 2p</td><td>Trigonal planar</td><td>120°</td><td>BF₃, C₂H₄, SO₃</td></tr>
+      <tr><td>sp³</td><td>1s + 3p</td><td>Tetrahedral</td><td>109.5°</td><td>CH₄, NH₄⁺, SiH₄</td></tr>
+      <tr><td>sp³d</td><td>1s+3p+1d</td><td>Trigonal bipyramidal</td><td>90°/120°</td><td>PCl₅, AsF₅</td></tr>
+      <tr><td>sp³d²</td><td>1s+3p+2d</td><td>Octahedral</td><td>90°</td><td>SF₆, [PF₆]⁻</td></tr>
+      </tbody></table>
+      <div class="highlight-box"><div class="hb-title">🎯 Hybridization vs VSEPR: NH₃ and H₂O</div>
+      N in NH₃: 4 electron pairs (3 bonding + 1 lone pair) → sp³ hybridized<br>
+      But bond angle = 107° (not 109.5°) — lone pair takes more space, compresses bond angles<br><br>
+      O in H₂O: 4 electron pairs (2 bonding + 2 lone pairs) → sp³ hybridized<br>
+      But bond angle = 104.5° — two lone pairs cause more compression
+      </div>`,
+    },
+    {
+      heading: "VSEPR Theory",
+      body: `<p><strong>Valence Shell Electron Pair Repulsion (VSEPR)</strong> theory predicts molecular geometry based on the principle that electron pairs in the valence shell repel each other and adopt positions to minimize this repulsion.</p>
+      <div class="highlight-box"><div class="hb-title">🔑 Key Rules of VSEPR</div>
+      1. Count ALL electron pairs around the central atom (bonding + lone pairs)<br>
+      2. Lone pairs occupy more space than bonding pairs (greater repulsion)<br>
+      3. Repulsion order: LP-LP > LP-BP > BP-BP<br>
+      4. Multiple bonds count as ONE region of electron density for VSEPR
+      </div>
+      <table class="chem-table"><thead><tr><th>Electron pairs</th><th>Lone pairs</th><th>Shape</th><th>Angle</th><th>Example</th></tr></thead>
+      <tbody>
+      <tr><td>2</td><td>0</td><td>Linear</td><td>180°</td><td>BeCl₂, CO₂, CS₂</td></tr>
+      <tr><td>3</td><td>0</td><td>Trigonal planar</td><td>120°</td><td>BF₃, NO₃⁻, SO₃</td></tr>
+      <tr><td>3</td><td>1</td><td>Bent (V-shaped)</td><td>&lt;120°</td><td>SO₂, O₃, SnCl₂</td></tr>
+      <tr><td>4</td><td>0</td><td>Tetrahedral</td><td>109.5°</td><td>CH₄, SiCl₄</td></tr>
+      <tr><td>4</td><td>1</td><td>Trigonal pyramidal</td><td>107°</td><td>NH₃, PCl₃</td></tr>
+      <tr><td>4</td><td>2</td><td>Bent (V-shaped)</td><td>104.5°</td><td>H₂O, H₂S</td></tr>
+      <tr><td>5</td><td>0</td><td>Trigonal bipyramidal</td><td>90°/120°</td><td>PCl₅</td></tr>
+      <tr><td>5</td><td>1</td><td>See-saw</td><td>&lt;90°/&lt;120°</td><td>SF₄</td></tr>
+      <tr><td>5</td><td>2</td><td>T-shaped</td><td>&lt;90°</td><td>ClF₃</td></tr>
+      <tr><td>6</td><td>0</td><td>Octahedral</td><td>90°</td><td>SF₆</td></tr>
+      <tr><td>6</td><td>1</td><td>Square pyramidal</td><td>&lt;90°</td><td>IF₅, BrF₅</td></tr>
+      <tr><td>6</td><td>2</td><td>Square planar</td><td>90°</td><td>XeF₄, ICl₄⁻</td></tr>
+      </tbody></table>`,
+    },
+    {
+      heading: "Resonance",
+      body: `<p>When a single Lewis structure cannot adequately represent a molecule, we use <strong>resonance structures</strong> — multiple Lewis structures that together describe the actual electronic structure. The real molecule is a hybrid (average) of all resonance contributors.</p>
+      <ul class="bullet-list">
+      <li><strong>NO₃⁻:</strong> Three equivalent resonance structures with alternating N=O and N-O bonds → actual N-O bond order = 4/3 ≈ 1.33 (all bonds equal, intermediate between single and double)</li>
+      <li><strong>Benzene (C₆H₆):</strong> Two Kekulé structures → delocalized π electrons over the ring → all C-C bonds equal at 140 pm (between single 154 pm and double 134 pm)</li>
+      <li><strong>CO₃²⁻:</strong> Three equivalent structures → bond order = 4/3</li>
+      <li><strong>O₃ (ozone):</strong> Two resonance structures → bond order = 1.5</li>
+      </ul>
+      <p><strong>Resonance energy (delocalization energy):</strong> The actual molecule is more stable than any single resonance structure. For benzene, the resonance energy ≈ 151 kJ/mol (much more stable than a hypothetical cyclohexatriene).</p>
+      <p><strong>Rules for valid resonance structures:</strong> Same atomic positions, same number of electrons, formal charges should be minimized and electronegative atoms should carry negative formal charges.</p>`,
+    }
+  ],
+  questions: [
+    {
+      q: "The bond angle in H₂O (104.5°) is less than in NH₃ (107°) because:",
+      opts: [
+        "O is more electronegative than N",
+        "H₂O has 2 lone pairs which exert more LP-LP repulsion than 1 lone pair in NH₃",
+        "H₂O has shorter O-H bonds than N-H bonds",
+        "O is larger than N"
+      ],
+      ans: 1,
+      exp: "H₂O has 2 lone pairs; NH₃ has 1 lone pair. Since LP-LP repulsion > LP-BP repulsion > BP-BP repulsion (VSEPR), the two lone pairs in H₂O compress the H-O-H angle more severely than the single lone pair in NH₃ compresses the H-N-H angle. Both are sp³ hybridized but with different numbers of lone pairs."
+    },
+    {
+      q: "Which of the following species has a SQUARE PLANAR geometry?",
+      opts: ["SF₄", "XeF₄", "BrF₄⁻... wait, which is it?", "PCl₄⁺"],
+      ans: 1,
+      exp: "XeF₄ has 6 electron pairs around Xe (4 bonding + 2 lone pairs). With 6 electron domains adopting octahedral geometry, the 2 lone pairs go axial (opposite each other to minimize repulsion), leaving the 4 F atoms in a square planar arrangement. SF₄ has 5 electron domains → see-saw shape. PCl₄⁺ has 4 bonding pairs → tetrahedral."
+    },
+    {
+      q: "In resonance structures of NO₃⁻, the actual N-O bond order is:",
+      opts: ["1.0", "1.33", "1.5", "2.0"],
+      ans: 1,
+      exp: "NO₃⁻ has 3 resonance structures. In each structure, there are 2 single bonds (N-O, bond order 1) and 1 double bond (N=O, bond order 2). Average bond order = (1+1+2)/3 = 4/3 = 1.33. All three N-O bonds are identical in the real molecule, each with bond order ≈ 1.33."
+    },
+    {
+      q: "The hybridization of carbon in the carbonate ion CO₃²⁻ is:",
+      opts: ["sp", "sp²", "sp³", "sp³d"],
+      ans: 1,
+      exp: "In CO₃²⁻, carbon is the central atom bonded to 3 oxygen atoms. VSEPR: 3 bonding regions, 0 lone pairs → trigonal planar geometry → sp² hybridization. The three sp² hybrid orbitals form σ bonds with the 3 oxygens. The remaining unhybridized p orbital on C overlaps with p orbitals on all three O atoms to form a delocalized π system (resonance)."
+    },
+    {
+      q: "In BF₃, which statement about pi bonding is correct?",
+      opts: [
+        "There is no pi bonding in BF₃",
+        "BF₃ has pπ-pπ back-donation from F to B, giving B-F bonds some double bond character",
+        "BF₃ has sp³ hybridized boron",
+        "The pi bonding makes BF₃ a Lewis base"
+      ],
+      ans: 1,
+      exp: "B in BF₃ has an empty p orbital perpendicular to the molecular plane. Each F atom has filled p orbitals that can donate electron density into the empty B p orbital → pπ-pπ back-bonding. This partial double bond character shortens the B-F bond (130 pm vs expected 152 pm for single bond) and makes BF₃ weaker as a Lewis acid than expected. This also explains why BF₃ bond dissociation energy is higher than BCl₃."
+    }
+  ]
+},
+
+{
+  id: 5, unit: 1,
+  icon: "🌊",
+  title: "Molecular Orbital Theory (LCAO Method)",
+  duration: "~3 hrs",
+  pyqTag: "Very High Yield",
+  sections: [
+    {
+      heading: "Fundamentals of MO Theory",
+      body: `<p>Molecular Orbital theory treats electrons in a molecule as belonging to the entire molecule — not to individual atoms. Atomic orbitals combine (LCAO = Linear Combination of Atomic Orbitals) to form <strong>molecular orbitals</strong> that are spread over the whole molecule.</p>
+      <div class="highlight-box"><div class="hb-title">🔑 Rules for LCAO Combination</div>
+      1. Combining orbitals must have <strong>similar energy</strong><br>
+      2. They must have the <strong>same symmetry</strong> about the molecular axis<br>
+      3. They must have <strong>significant overlap</strong> (non-zero overlap integral)<br>
+      4. n atomic orbitals always combine to give exactly n molecular orbitals
+      </div>
+      <p>When two AOs combine: they form ONE <strong>bonding MO</strong> (lower energy, constructive interference, builds electron density between nuclei) and ONE <strong>antibonding MO</strong> (higher energy, destructive interference, node between nuclei — marked with *).</p>`,
+    },
+    {
+      heading: "Types of Molecular Orbitals",
+      body: `<p><strong>σ (sigma) MOs:</strong> Formed by head-on overlap. Have cylindrical symmetry about the molecular axis. From s-s, s-p(axial), p-p(axial) overlap.</p>
+      <p><strong>π (pi) MOs:</strong> Formed by sideways overlap of p orbitals perpendicular to the molecular axis. Have a nodal plane containing the internuclear axis. From p-p(lateral) overlap.</p>
+      <p><strong>Antibonding MOs (σ*, π*):</strong> Have a nodal plane between the nuclei. Electrons in these orbitals destabilize the molecule.</p>
+      <div class="formula-box"><div class="label">Energy Order of MOs (2nd period — with s-p mixing for Z ≤ 7)</div>
+      σ1s &lt; σ*1s &lt; σ2s &lt; σ*2s &lt; π2p ≈ π2p &lt; σ2p &lt; π*2p ≈ π*2p &lt; σ*2p<br><br>
+      NOTE: For N₂, O₂, F₂ onwards: σ2p moves BELOW π2p because s-p mixing diminishes<br>
+      For B₂, C₂, N₂ (Z ≤ 7): π2p is filled BEFORE σ2p (key for bond order/magnetism calculations)
+      </div>`,
+    },
+    {
+      heading: "Bond Order & Magnetic Properties",
+      body: `<div class="formula-box"><div class="label">Bond Order Formula</div>Bond Order = (Nb − Na) / 2<br>
+      Where Nb = electrons in bonding MOs, Na = electrons in antibonding MOs</div>
+      <p>Higher bond order → shorter bond length → higher bond dissociation energy</p>
+      <table class="chem-table"><thead><tr><th>Species</th><th>Electrons</th><th>Bond Order</th><th>Magnetic</th><th>Bond Length</th></tr></thead>
+      <tbody>
+      <tr><td>H₂</td><td>2</td><td>1</td><td>Diamagnetic</td><td>74 pm</td></tr>
+      <tr><td>He₂</td><td>4</td><td>0</td><td>—</td><td>Does not exist</td></tr>
+      <tr><td>Li₂</td><td>6</td><td>1</td><td>Diamagnetic</td><td>267 pm</td></tr>
+      <tr><td>B₂</td><td>10</td><td>1</td><td><strong>Paramagnetic</strong></td><td>159 pm</td></tr>
+      <tr><td>C₂</td><td>12</td><td>2</td><td>Diamagnetic</td><td>131 pm</td></tr>
+      <tr><td>N₂</td><td>14</td><td>3</td><td>Diamagnetic</td><td>110 pm</td></tr>
+      <tr><td>O₂</td><td>16</td><td>2</td><td><strong>Paramagnetic</strong></td><td>121 pm</td></tr>
+      <tr><td>F₂</td><td>18</td><td>1</td><td>Diamagnetic</td><td>142 pm</td></tr>
+      <tr><td>Ne₂</td><td>20</td><td>0</td><td>—</td><td>Does not exist</td></tr>
+      </tbody></table>
+      <div class="highlight-box"><div class="hb-title">⭐ Classic DU PYQ: Why is O₂ paramagnetic?</div>
+      VB theory predicts O₂ should be diamagnetic (all electrons paired in double bond). However, O₂ is experimentally paramagnetic (attracted to magnetic field). MO theory explains this perfectly: the last 2 electrons in O₂ go into two degenerate π*2p orbitals — one each (Hund's rule). These 2 unpaired electrons make O₂ paramagnetic. This was a major triumph of MO theory over VB theory.
+      </div>`,
+    },
+    {
+      heading: "Heteronuclear Diatomics: CO, NO, NO⁺",
+      body: `<p>For heteronuclear diatomics, the MO diagram is similar but the AOs are no longer equal in energy. The more electronegative atom has lower-energy AOs.</p>
+      <div class="highlight-box"><div class="hb-title">🎯 CO (14 electrons — isoelectronic with N₂)</div>
+      Electron configuration: σ1s² σ*1s² σ2s² σ*2s² π2p⁴ σ2p²<br>
+      Bond order = (10 − 4)/2 = 3 (triple bond)<br>
+      Diamagnetic (all electrons paired)<br>
+      The HOMO (σ2p) is concentrated on C → CO acts as electron donor through carbon in metal carbonyls
+      </div>
+      <div class="highlight-box"><div class="hb-title">🎯 NO (15 electrons)</div>
+      Configuration: σ1s² σ*1s² σ2s² σ*2s² π2p⁴ σ2p² π*2p¹<br>
+      Bond order = (10 − 5)/2 = 2.5<br>
+      Paramagnetic (1 unpaired electron in π*2p)<br>
+      Easily loses the π* electron: NO → NO⁺ + e⁻ → bond order becomes 3 (triple bond, isoelectronic with N₂/CO)
+      </div>
+      <div class="highlight-box"><div class="hb-title">🎯 NO⁺ (14 electrons)</div>
+      Bond order = 3; Diamagnetic; More stable than NO; Shorter bond length than NO
+      </div>`,
+    }
+  ],
+  questions: [
+    {
+      q: "Which of the following statements about O₂ is explained by MO theory but NOT by VB theory?",
+      opts: [
+        "O₂ has a double bond",
+        "O₂ is paramagnetic",
+        "O₂ has O=O bond",
+        "O₂ is more reactive than N₂"
+      ],
+      ans: 1,
+      exp: "VB theory predicts O₂ has a double bond with all electrons paired → diamagnetic. But experimentally O₂ is paramagnetic (2 unpaired electrons). MO theory shows O₂ has two electrons in the degenerate π*2p orbitals (one in each, per Hund's rule) → 2 unpaired electrons → paramagnetic. This is MO theory's greatest triumph over VB theory."
+    },
+    {
+      q: "The bond order of NO⁺ is:",
+      opts: ["1.5", "2", "2.5", "3"],
+      ans: 3,
+      exp: "NO has 15 electrons with bond order 2.5. NO⁺ has 14 electrons (one less — the π*2p electron is removed). Configuration: σ1s² σ*1s² σ2s² σ*2s² π2p⁴ σ2p². Bond order = (10−4)/2 = 3. NO⁺ is isoelectronic with N₂ and CO, both of which also have bond order 3. This also explains why NO readily ionizes to NO⁺ — it removes a destabilizing antibonding electron."
+    },
+    {
+      q: "Which of the following species does NOT exist as a stable molecule?",
+      opts: ["H₂", "He₂", "Li₂", "B₂"],
+      ans: 1,
+      exp: "He₂ would have configuration (σ1s)²(σ*1s)². Bond order = (2−2)/2 = 0. Zero bond order means no net bonding → He₂ does not exist as a stable molecule. In contrast, H₂ (bond order 1), Li₂ (bond order 1), and B₂ (bond order 1) are all known molecules."
+    },
+    {
+      q: "For second-period diatomics with Z ≤ 7 (B₂, C₂, N₂), the correct MO energy ordering is:",
+      opts: [
+        "...σ2s < σ*2s < σ2p < π2p < π*2p < σ*2p",
+        "...σ2s < σ*2s < π2p < σ2p < π*2p < σ*2p",
+        "...σ2s < σ*2s < π2p < π*2p < σ2p < σ*2p",
+        "...σ2s < σ*2s < σ*2p < π2p < π*2p < σ2p"
+      ],
+      ans: 1,
+      exp: "For B₂, C₂, N₂ (Z ≤ 7), s-p mixing is significant because the 2s and 2p orbitals are close in energy. This mixing raises the energy of σ2p above π2p. So the order is: π2p (filled first) < σ2p. For O₂, F₂ (Z ≥ 8), s-p mixing is negligible → σ2p goes below π2p. This distinction is critical for determining paramagnetism of B₂ (paramagnetic, 2 unpaired in π2p)."
+    },
+    {
+      q: "Which diatomic species has the SHORTEST bond length?",
+      opts: ["N₂", "N₂⁺", "N₂²⁺", "NO"],
+      ans: 0,
+      exp: "N₂ has bond order 3 (the triple bond). N₂⁺ has one electron removed from the bonding σ2p → bond order 2.5 → longer bond. N₂²⁺ has even lower bond order. NO has bond order 2.5. Higher bond order correlates with shorter bond length. N₂ with bond order 3 has the shortest bond (~110 pm vs NO at ~115 pm)."
+    }
+  ]
+},
+
+{
+  id: 6, unit: 1,
+  icon: "🧲",
+  title: "Hydrogen Bonding, Metallic Bonding & van der Waals Forces",
+  duration: "~2 hrs",
+  pyqTag: "Theory Questions",
+  sections: [
+    {
+      heading: "Hydrogen Bonding",
+      body: `<p>A <strong>hydrogen bond</strong> (X-H···Y) forms when a hydrogen atom covalently bonded to a highly electronegative atom (X = F, O, N) is attracted to another electronegative atom (Y = F, O, N) in the same or different molecule.</p>
+      <ul class="bullet-list">
+      <li><strong>Intramolecular H-bonding:</strong> Within the same molecule. Reduces effective polarity. Example: 2-nitrophenol, salicylaldehyde. Results in LOWER boiling point than intermolecular counterparts.</li>
+      <li><strong>Intermolecular H-bonding:</strong> Between different molecules. Requires more energy to break → HIGHER boiling point, surface tension, viscosity. Examples: H₂O, HF, NH₃, alcohols, carboxylic acids.</li>
+      </ul>
+      <div class="highlight-box"><div class="hb-title">🔑 Why HF has lower bp than H₂O despite stronger H-bonds?</div>
+      HF (bp 19.5°C) < H₂O (bp 100°C): Each F in HF can form only 1 H-bond as donor (only 1 H), while each O in H₂O can form 2 H-bonds as donor (2 H's). Also, O in H₂O has 2 lone pairs (2 acceptor sites). This creates a 3D network in water vs. chains in HF → water has much higher latent heat of vaporization (40.65 kJ/mol).
+      </div>
+      <p><strong>Ice structure:</strong> Water molecules in ice form a tetrahedral arrangement via H-bonding, giving ice a more open structure than liquid water → ice is less dense than water → ice floats. This has profound biological implications.</p>`,
+    },
+    {
+      heading: "Metallic Bonding",
+      body: `<p>Metals consist of a lattice of positive metal ions (kernels) immersed in a "sea" or "cloud" of delocalized valence electrons. The attraction between the positive kernels and the negative electron sea constitutes the <strong>metallic bond</strong>.</p>
+      <ul class="bullet-list">
+      <li><strong>Electrical conductivity:</strong> Delocalized electrons are free to move → conduct electricity (and heat)</li>
+      <li><strong>Malleability & ductility:</strong> Metal ions can slide past each other without disrupting the uniform electron sea (unlike ionic compounds where like-ion repulsion causes fracture)</li>
+      <li><strong>Metallic lustre:</strong> Free electrons absorb and re-emit photons of visible light → shiny appearance</li>
+      <li><strong>Strength:</strong> Increases with more valence electrons contributing to the sea and with smaller, more highly charged metal ions (e.g., W has extremely high mp = 3422°C)</li>
+      </ul>`,
+    },
+    {
+      heading: "van der Waals Forces",
+      body: `<p>Van der Waals forces are weak, transient electrostatic interactions between all molecules — polar or non-polar. They arise from temporary (instantaneous) or permanent charge asymmetries.</p>
+      <table class="chem-table"><thead><tr><th>Type</th><th>Origin</th><th>Strength</th><th>Example</th></tr></thead>
+      <tbody>
+      <tr><td>London dispersion forces</td><td>Instantaneous dipole–induced dipole (all molecules)</td><td>Weakest (proportional to polarizability)</td><td>Noble gases, alkanes</td></tr>
+      <tr><td>Dipole–induced dipole (Debye)</td><td>Permanent dipole induces dipole in neighbour</td><td>Intermediate</td><td>HCl···Cl₂</td></tr>
+      <tr><td>Dipole–dipole (Keesom)</td><td>Alignment of permanent dipoles</td><td>Stronger</td><td>HCl···HCl</td></tr>
+      </tbody></table>
+      <ul class="bullet-list">
+      <li>London forces increase with molecular size (more electrons → more polarizable → larger instantaneous dipoles)</li>
+      <li>London forces are the ONLY intermolecular forces in non-polar molecules (N₂, O₂, noble gases, I₂, hexane)</li>
+      <li>Boiling point trend in Group 18: He (-269°C) &lt; Ne (-246°C) &lt; Ar (-186°C) &lt; Kr (-153°C) &lt; Xe (-108°C) — purely due to increasing London forces with size</li>
+      </ul>`,
+    }
+  ],
+  questions: [
+    {
+      q: "Which of the following has intramolecular hydrogen bonding, resulting in a LOWER boiling point than its para isomer?",
+      opts: ["Para-nitrophenol", "Ortho-nitrophenol", "Meta-nitrophenol", "All nitrophenols have the same bp"],
+      ans: 1,
+      exp: "Ortho-nitrophenol has the O-H group and NO₂ group close together → intramolecular H-bond forms between the two groups within the same molecule. This 'uses up' the H-bonding capacity internally, reducing intermolecular H-bonding → lower boiling point (214°C vs para-nitrophenol's 279°C)."
+    },
+    {
+      q: "Why does ice float on water?",
+      opts: [
+        "Ice molecules are lighter than water molecules",
+        "Ice has a more open H-bonded tetrahedral network structure making it less dense than liquid water",
+        "Ice repels water molecules",
+        "Liquid water has stronger hydrogen bonds than ice"
+      ],
+      ans: 1,
+      exp: "In ice, each water molecule forms 4 hydrogen bonds in a tetrahedral arrangement → a highly ordered, open hexagonal lattice with large 'holes'. Liquid water has slightly broken H-bonding network but molecules can pack more closely. Result: ice density (~0.917 g/cm³) < water density (~1.00 g/cm³). This explains why water expands when frozen — critical for aquatic life survival."
+    },
+    {
+      q: "The London dispersion forces are the only type of van der Waals force in:",
+      opts: ["HCl", "SO₂", "CO₂", "Hexane (C₆H₁₄)"],
+      ans: 3,
+      exp: "London forces exist in ALL molecules. But in non-polar molecules, there are NO permanent dipoles, so dipole-dipole and dipole-induced dipole forces are absent. Hexane is non-polar (C-H bonds cancel out due to molecular symmetry) → only London forces operate. HCl, SO₂, and CO₂ all have polar bonds; HCl and SO₂ also have permanent dipole moments."
+    },
+    {
+      q: "Tungsten (W) has the highest melting point (3422°C) among metals primarily because:",
+      opts: [
+        "It has the highest atomic mass",
+        "Its small, highly charged W⁶⁺ ions with 6 valence electrons create an extremely strong metallic bond",
+        "Tungsten has the strongest covalent bonds",
+        "Tungsten has the most number of protons"
+      ],
+      ans: 1,
+      exp: "Metallic bond strength depends on: (1) charge on the metal ion — higher charge → stronger attraction to electron sea, (2) size of ion — smaller ion → ions pack closer → stronger bond, (3) number of valence electrons — more electrons in the delocalized sea → stronger bonding. Tungsten (W) has [Xe]4f¹⁴5d⁴6s² → contributes up to 6 valence electrons and has a small, highly charged nucleus → exceptionally strong metallic bonds."
+    },
+    {
+      q: "The boiling points of noble gases increase from He to Xe because:",
+      opts: [
+        "Noble gases become more polar down the group",
+        "Noble gases form hydrogen bonds lower in the group",
+        "Larger atoms are more polarizable → stronger London dispersion forces → higher bp",
+        "Heavier noble gases have stronger nuclear forces"
+      ],
+      ans: 2,
+      exp: "Noble gases are completely non-polar and form no H-bonds or dipole interactions. Their only intermolecular forces are London dispersion forces. As atomic number increases (He→Xe), atomic size increases, electrons are more loosely held, polarizability increases → larger instantaneous dipoles → stronger London forces → more energy needed to boil → higher boiling points."
+    }
+  ]
+},
+
+// ====== UNIT 2 ======
+
+{
+  id: 7, unit: 2,
+  icon: "🔬",
+  title: "Classification of Elements in Biological Systems",
+  duration: "~1.5 hrs",
+  pyqTag: "Foundation Topic",
+  sections: [
+    {
+      heading: "Elements Essential for Life",
+      body: `<p>Of the 118 known elements, only about 29 are considered essential for life processes. These are classified based on their concentration in the human body and their biological function.</p>
+      <div class="highlight-box unit2"><div class="hb-title">📊 Classification by Amount in Body</div>
+      <strong>Bulk/Macroelements (&gt;0.01% body weight):</strong><br>
+      O, C, H, N — form organic molecules (proteins, nucleic acids, lipids, carbohydrates)<br>
+      Ca, P, S, K, Na, Cl, Mg — structural and electrolyte roles<br><br>
+      <strong>Trace Elements (0.0001–0.01%):</strong><br>
+      Fe, Zn, Cu, I, Mn, Co, Mo, Se, Cr, F<br><br>
+      <strong>Ultra-trace Elements (&lt;0.0001%):</strong><br>
+      V, Si, Ni, Li, Sn, As (some essential at ultra-low levels)
+      </div>`,
+    },
+    {
+      heading: "Geochemical Effect on Element Distribution",
+      body: `<p>The availability of elements in living organisms reflects their abundance in the Earth's crust and seawater — this is called the <strong>Geochemical Effect</strong>.</p>
+      <ul class="bullet-list unit2">
+      <li>Na⁺ and Cl⁻ are abundant in seawater → used extensively in biological systems as extracellular electrolytes</li>
+      <li>K⁺ is relatively abundant in rocks/soil → preferentially accumulated intracellularly by organisms</li>
+      <li>Fe is the 4th most abundant element in Earth's crust but has low bioavailability due to insolubility of Fe³⁺ at neutral pH → specialized transport systems (transferrin, ferritin) evolved</li>
+      <li>Early life evolved in a reducing ocean with Fe²⁺ available; as O₂ increased (Great Oxidation Event ~2.4 Ga), Fe²⁺ was oxidized to insoluble Fe³⁺ → evolutionary pressure for iron-handling proteins</li>
+      <li>Heavy metals (Hg, Pb, Cd) are rare in Earth's crust naturally, so biological systems have NO evolved mechanisms to handle them → highly toxic even at trace levels</li>
+      </ul>
+      <table class="chem-table"><thead><tr><th>Element</th><th>Earth's Crust</th><th>Seawater</th><th>Body (70kg human)</th></tr></thead>
+      <tbody>
+      <tr><td>O</td><td>46%</td><td>89%</td><td>43 kg (61%)</td></tr>
+      <tr><td>Na</td><td>2.3%</td><td>10,500 ppm</td><td>100 g</td></tr>
+      <tr><td>K</td><td>2.1%</td><td>380 ppm</td><td>140 g</td></tr>
+      <tr><td>Fe</td><td>5.6%</td><td>0.002 ppm</td><td>4.2 g</td></tr>
+      <tr><td>Zn</td><td>70 ppm</td><td>0.001 ppm</td><td>2.6 g</td></tr>
+      </tbody></table>`,
+    }
+  ],
+  questions: [
+    {
+      q: "Which of the following pairs are considered bulk/macroelements in the human body?",
+      opts: ["Fe and Zn", "Na and K", "Cu and Mn", "I and Mo"],
+      ans: 1,
+      exp: "Na and K are both macroelements (present at >0.01% body weight). Na is ~100g and K is ~140g in a 70kg human. They are critical extracellular (Na⁺) and intracellular (K⁺) electrolytes. Fe, Zn, Cu, Mn, I, and Mo are all trace elements present in milligram or microgram quantities."
+    },
+    {
+      q: "The geochemical effect explains why Na⁺ is used as the main extracellular ion rather than K⁺. This is because:",
+      opts: [
+        "Na⁺ is smaller than K⁺",
+        "Na⁺ is more abundant in seawater, where early life evolved",
+        "K⁺ is more toxic to cells",
+        "Na⁺ has higher hydration enthalpy"
+      ],
+      ans: 1,
+      exp: "Life evolved in the ocean. Seawater has Na⁺ at ~10,500 ppm vs K⁺ at ~380 ppm. Early cells adopted the ionic composition of their environment, using Na⁺ extracellularly. Over evolution, K⁺ was selectively pumped into cells (maintained at higher [K⁺] intracellularly by the Na⁺/K⁺-ATPase pump) for membrane potential and enzyme function."
+    },
+    {
+      q: "Despite being the 4th most abundant element in Earth's crust, iron's biological availability is limited because:",
+      opts: [
+        "Iron has high atomic mass",
+        "Fe³⁺ forms insoluble hydroxides at neutral pH, making it nearly unavailable",
+        "Iron is toxic to all organisms",
+        "Iron only exists in metallic form in nature"
+      ],
+      ans: 1,
+      exp: "At physiological pH (7.4), Fe³⁺ readily precipitates as Fe(OH)₃ (Ksp ~10⁻³⁹). This extreme insolubility means that despite Fe being abundant in rocks, biological systems evolved sophisticated uptake mechanisms (siderophores in bacteria, transferrin in mammals) to acquire and transport this essential but sparingly available element."
+    },
+    {
+      q: "Which category of elements tends to be most toxic to biological systems?",
+      opts: [
+        "Light elements (H, C, N, O)",
+        "Alkali metals (Na, K, Li)",
+        "Heavy metals (Hg, Pb, Cd, As) which are rare in nature",
+        "Alkaline earth metals (Mg, Ca)"
+      ],
+      ans: 2,
+      exp: "Heavy metals like Hg, Pb, Cd are geochemically rare in the Earth's crust in bioavailable form. Biological systems never encountered them in significant quantities during evolution, so NO detoxification or handling mechanisms evolved. When introduced (by pollution etc.), they have high affinity for sulfhydryl (-SH) groups in proteins → enzyme inhibition → severe toxicity."
+    },
+    {
+      q: "Which element is correctly categorized as an ultra-trace element?",
+      opts: ["Calcium (Ca)", "Iron (Fe)", "Vanadium (V)", "Potassium (K)"],
+      ans: 2,
+      exp: "Vanadium (V) is an ultra-trace element (<0.0001% body weight). It has proposed roles as a cofactor in some enzymes (nitrogenases in certain bacteria, haloperoxidases). Ca is a macroelement (~1 kg in adult), Fe is a trace element (~4.2g), and K is a macroelement (~140g)."
+    }
+  ]
+},
+
+{
+  id: 8, unit: 2,
+  icon: "⚡",
+  title: "Na⁺, K⁺ & the Sodium-Potassium Pump",
+  duration: "~2 hrs",
+  pyqTag: "Very High Yield",
+  sections: [
+    {
+      heading: "Roles of Na⁺ and K⁺ in Biology",
+      body: `<p>Sodium and potassium are the predominant monovalent cations in living cells, maintained in a precise asymmetric distribution across cell membranes by active transport.</p>
+      <table class="chem-table"><thead><tr><th>Parameter</th><th>Intracellular</th><th>Extracellular</th></tr></thead>
+      <tbody>
+      <tr><td>[Na⁺]</td><td>10–15 mM (low)</td><td>135–145 mM (high)</td></tr>
+      <tr><td>[K⁺]</td><td>120–140 mM (high)</td><td>3.5–5 mM (low)</td></tr>
+      <tr><td>[Cl⁻]</td><td>4–30 mM</td><td>100–110 mM</td></tr>
+      </tbody></table>
+      <div class="highlight-box unit2"><div class="hb-title">🔑 Functions of Na⁺</div>
+      • Osmotic regulation — controls extracellular fluid volume and blood pressure<br>
+      • Action potentials — Na⁺ influx through voltage-gated channels depolarizes neurons<br>
+      • Nutrient co-transport — many transporters use Na⁺ gradient as energy source (Na⁺-glucose co-transporter SGLT1)<br>
+      • Acid-base balance — Na⁺/H⁺ antiporters in kidneys
+      </div>
+      <div class="highlight-box unit2"><div class="hb-title">🔑 Functions of K⁺</div>
+      • Resting membrane potential — K⁺ leak channels and [K⁺] gradient create −70 mV RMP in neurons<br>
+      • Cardiac rhythm — K⁺ channels regulate heart rate (hypokalemia → arrhythmia)<br>
+      • Enzyme activation — many enzymes (pyruvate kinase, H⁺/K⁺-ATPase) require K⁺<br>
+      • Cell volume regulation and protein synthesis
+      </div>`,
+    },
+    {
+      heading: "The Sodium-Potassium ATPase Pump",
+      body: `<p>The <strong>Na⁺/K⁺-ATPase pump</strong> is a transmembrane enzyme that actively maintains the Na⁺/K⁺ gradient by transporting 3 Na⁺ OUT and 2 K⁺ IN per cycle, at the cost of 1 ATP molecule.</p>
+      <div class="formula-box unit2"><div class="label">The Pump Cycle</div>
+      3 Na⁺(in) + 2 K⁺(out) + ATP → 3 Na⁺(out) + 2 K⁺(in) + ADP + Pᵢ<br><br>
+      Net: Electrogenic (3+ out, 2+ in = net −1 charge movement outward)<br>
+      Creates a slight hyperpolarization of the cell membrane
+      </div>
+      <p><strong>Mechanism (E1-E2 model):</strong></p>
+      <ul class="bullet-list unit2">
+      <li><strong>E1 conformation:</strong> High affinity for Na⁺; cytoplasmic face open. 3 Na⁺ bind inside the cell</li>
+      <li><strong>Phosphorylation:</strong> ATP phosphorylates Asp369 → conformational change to E2</li>
+      <li><strong>E2 conformation:</strong> Low affinity for Na⁺; extracellular face open → 3 Na⁺ released outside</li>
+      <li><strong>K⁺ binding:</strong> 2 K⁺ bind to E2 from extracellular side; dephosphorylation → E1</li>
+      <li><strong>K⁺ release:</strong> Low K⁺ affinity in E1 → 2 K⁺ released into cytoplasm; ready for next cycle</li>
+      </ul>
+      <div class="highlight-box unit2"><div class="hb-title">🏥 Clinical Importance</div>
+      • Digoxin/Ouabain (cardiac glycosides) inhibit Na⁺/K⁺-ATPase → ↑intracellular Na⁺ → activates Na⁺/Ca²⁺ exchanger → ↑intracellular Ca²⁺ → stronger cardiac contraction (used in heart failure)<br>
+      • The pump uses ~20-30% of ALL ATP generated by resting cells (up to 70% in neurons)<br>
+      • Hyperkalemia (high blood K⁺) is life-threatening → cardiac arrhythmia<br>
+      • Hyponatremia (low blood Na⁺) causes brain cell swelling → seizures, coma
+      </div>`,
+    }
+  ],
+  questions: [
+    {
+      q: "The Na⁺/K⁺-ATPase pump transports (per cycle using 1 ATP):",
+      opts: [
+        "2 Na⁺ out and 3 K⁺ in",
+        "3 Na⁺ out and 2 K⁺ in",
+        "3 Na⁺ out and 3 K⁺ in",
+        "2 Na⁺ out and 2 K⁺ in"
+      ],
+      ans: 1,
+      exp: "The Na⁺/K⁺-ATPase transports exactly 3 Na⁺ OUT of the cell and 2 K⁺ INTO the cell per ATP hydrolyzed. This 3:2 ratio is NOT electroneutral — it moves 3 positive charges out and 2 in, creating a net outward positive charge movement. This makes the pump electrogenic, contributing about −3 to −5 mV to the resting membrane potential."
+    },
+    {
+      q: "The resting membrane potential of neurons (approximately −70 mV) is primarily due to:",
+      opts: [
+        "Na⁺ influx through leak channels",
+        "K⁺ efflux through K⁺ leak channels down its concentration gradient",
+        "Cl⁻ influx into neurons",
+        "The Na⁺/K⁺ pump directly generating the voltage"
+      ],
+      ans: 1,
+      exp: "The resting membrane potential is primarily due to K⁺ leak channels. Since [K⁺] is high inside (~140 mM) and low outside (~4 mM), K⁺ tends to diffuse out down its concentration gradient. As positive K⁺ ions leave, the inside becomes more negative → generates the −70 mV potential. The equilibrium potential for K⁺ (Nernst equation) is approximately −95 mV, and RMP is partly determined by this K⁺ equilibrium."
+    },
+    {
+      q: "Cardiac glycosides (like digoxin) treat heart failure by:",
+      opts: [
+        "Directly stimulating the Na⁺/K⁺ pump",
+        "Inhibiting Na⁺/K⁺-ATPase → ↑[Na⁺]ᵢ → less Na⁺/Ca²⁺ exchange → ↑[Ca²⁺]ᵢ → stronger contraction",
+        "Opening Ca²⁺ channels in cardiomyocytes",
+        "Increasing K⁺ concentration in the cell"
+      ],
+      ans: 1,
+      exp: "Digoxin inhibits Na⁺/K⁺-ATPase → [Na⁺]ᵢ rises. The Na⁺/Ca²⁺ exchanger (NCX) normally uses the Na⁺ gradient (Na⁺ flowing in) to pump Ca²⁺ out. With higher [Na⁺]ᵢ, the Na⁺ gradient driving NCX decreases → less Ca²⁺ exported → [Ca²⁺]ᵢ increases → more Ca²⁺ available for contractile proteins → stronger heartbeat (positive inotropic effect)."
+    },
+    {
+      q: "The intracellular concentration of K⁺ in a typical animal cell is approximately:",
+      opts: ["3–5 mM (similar to blood plasma)", "120–140 mM (much higher than plasma)", "0.1–0.5 mM", "Equal to Na⁺ intracellular concentration"],
+      ans: 1,
+      exp: "Intracellular [K⁺] ≈ 120-140 mM vs extracellular [K⁺] ≈ 3.5-5 mM. This ~30-fold concentration difference across the membrane is maintained by the Na⁺/K⁺-ATPase pump against the K⁺ gradient (K⁺ would naturally diffuse out). Compare with Na⁺: intracellular ~10-15 mM vs extracellular ~140 mM (10-fold gradient, opposite direction)."
+    },
+    {
+      q: "The Na⁺/K⁺-ATPase is described as 'electrogenic'. This means:",
+      opts: [
+        "It generates ATP by running in reverse",
+        "It produces a net movement of charge across the membrane (3+ out, 2+ in), contributing to membrane potential",
+        "It can conduct electrons like a metal",
+        "It requires an electrical gradient to function"
+      ],
+      ans: 1,
+      exp: "Electrogenic means the pump creates a net electrical current (charge movement). Since 3 Na⁺ (3 positive charges) move out and only 2 K⁺ (2 positive charges) come in, there is a net outward movement of 1 positive charge per cycle. This makes the inside of the cell slightly more negative, contributing approximately −3 to −5 mV to the resting membrane potential (the total RMP is ~−70 mV, with K⁺ diffusion contributing the rest)."
+    }
+  ]
+},
+
+{
+  id: 9, unit: 2,
+  icon: "🦴",
+  title: "Calcium, Magnesium & Their Biological Roles",
+  duration: "~2 hrs",
+  pyqTag: "High Yield",
+  sections: [
+    {
+      heading: "Calcium (Ca²⁺): The Second Messenger",
+      body: `<p>Calcium is the 5th most abundant element in the body (~1 kg in an adult). About 99% is in bones and teeth as hydroxyapatite [Ca₁₀(PO₄)₆(OH)₂]. The remaining 1% is split between intracellular stores and blood plasma.</p>
+      <table class="chem-table"><thead><tr><th>Location</th><th>[Ca²⁺]</th><th>Role</th></tr></thead>
+      <tbody>
+      <tr><td>Blood plasma</td><td>2.2–2.6 mM</td><td>Signaling, cofactor</td></tr>
+      <tr><td>Cytoplasm (resting)</td><td>~100 nM (very low!)</td><td>Ready for signaling</td></tr>
+      <tr><td>ER/SR lumen</td><td>~100–800 μM</td><td>Releasable store</td></tr>
+      <tr><td>Mitochondria</td><td>~200 nM</td><td>Energy metabolism</td></tr>
+      </tbody></table>
+      <div class="highlight-box unit2"><div class="hb-title">🦴 Structural Role of Ca²⁺</div>
+      Hydroxyapatite Ca₁₀(PO₄)₆(OH)₂ forms the mineral matrix of bone and enamel.<br>
+      Ca²⁺ bridges between protein chains in many structural proteins.<br>
+      In plants: Ca²⁺ cross-links pectin in cell walls, providing rigidity.
+      </div>
+      <div class="highlight-box unit2"><div class="hb-title">🩸 Ca²⁺ in Blood Clotting (Coagulation)</div>
+      Ca²⁺ (Factor IV) is essential at MULTIPLE steps in the coagulation cascade:<br>
+      • Ca²⁺ bridges γ-carboxylated Glu residues in clotting factors (II, VII, IX, X) to phospholipid membrane surfaces<br>
+      • Without Ca²⁺, prothrombin cannot bind to platelet surfaces → thrombin not formed → no clot<br>
+      • EDTA/citrate chelate Ca²⁺ → used as anticoagulants in blood collection tubes<br>
+      • Warfarin inhibits Vitamin K recycling → Glu not γ-carboxylated → clotting factors don't bind Ca²⁺ → anticoagulation
+      </div>
+      <p><strong>Ca²⁺ as second messenger:</strong> A transient rise in cytosolic [Ca²⁺] (from ~100 nM to ~1 μM) is the signal for: muscle contraction (Ca²⁺ binds troponin C → tropomyosin moves → actin-myosin interaction), exocytosis (neurotransmitter release), cell division, apoptosis, and many enzyme activations (calmodulin-Ca²⁺ complex activates kinases).</p>`,
+    },
+    {
+      heading: "Magnesium (Mg²⁺): The Chlorophyll & ATP Ion",
+      body: `<p>Magnesium is the 11th most abundant element in the body (~25g in adults). It is the second most abundant intracellular cation (after K⁺), present at ~5–20 mM in cells.</p>
+      <div class="highlight-box unit2"><div class="hb-title">🌿 Role of Mg²⁺ in Chlorophyll</div>
+      Chlorophyll (the primary photosynthetic pigment) has a porphyrin ring with Mg²⁺ at its center — held by coordination bonds to the 4 nitrogen atoms. This makes Mg²⁺ absolutely essential for photosynthesis.<br><br>
+      • Mg²⁺ in the porphyrin ring enables delocalization of electrons → specific light absorption (650–680 nm red, 400–450 nm blue)<br>
+      • Plants with Mg deficiency: chlorosis (yellowing of leaves, starting in older leaves) because chlorophyll cannot form without Mg²⁺<br>
+      • Compare with haemoglobin: Fe²⁺ in place of Mg²⁺ in a similar porphyrin (heme) structure
+      </div>
+      <div class="highlight-box unit2"><div class="hb-title">⚡ Role of Mg²⁺ in Energy Production</div>
+      ATP (adenosine triphosphate) functions biologically as Mg-ATP²⁻ complex:<br>
+      • Mg²⁺ coordinates with the β and γ phosphates of ATP, reducing negative charge density and making ATP a better substrate for kinases<br>
+      • ALL kinases require Mg²⁺ as cofactor (hexokinase, pyruvate kinase, etc.)<br>
+      • DNA/RNA polymerases require Mg²⁺ for phosphodiester bond formation<br>
+      • Ribosome assembly and protein synthesis require Mg²⁺<br>
+      • Na⁺/K⁺-ATPase and Ca²⁺-ATPase require Mg²⁺ for ATP hydrolysis
+      </div>`,
+    }
+  ],
+  questions: [
+    {
+      q: "In blood clotting, Ca²⁺ (Factor IV) functions primarily by:",
+      opts: [
+        "Directly forming the fibrin clot",
+        "Bridging γ-carboxylated clotting factors to platelet membrane surfaces, enabling the coagulation cascade",
+        "Activating platelets by receptor binding",
+        "Dissolving existing clots (fibrinolysis)"
+      ],
+      ans: 1,
+      exp: "Ca²⁺ is essential as a bridge between the γ-carboxyglutamate (Gla) residues of clotting factors (II, VII, IX, X) and the phosphatidylserine on platelet membranes. Without Ca²⁺, these factors cannot bind to platelet surfaces, and the coagulation cascade cannot proceed efficiently. This is why EDTA and citrate (Ca²⁺ chelators) prevent clotting in blood collection tubes."
+    },
+    {
+      q: "The cytoplasmic concentration of Ca²⁺ in a resting cell is maintained at approximately:",
+      opts: ["Same as blood (2.2 mM)", "~100 nM (very low)", "~50 mM", "~5 mM"],
+      ans: 1,
+      exp: "Resting cytoplasmic [Ca²⁺] ≈ 100 nM = 10⁻⁷ M. This is ~20,000-fold lower than blood plasma Ca²⁺ (2.2 mM). This steep gradient is maintained by Ca²⁺-ATPase pumps and Na⁺/Ca²⁺ exchangers. The low resting concentration ensures that even a small Ca²⁺ signal (rise to ~1 μM) causes a large proportional change (~10-fold) → sensitive signaling."
+    },
+    {
+      q: "Magnesium is at the center of chlorophyll because:",
+      opts: [
+        "It provides the green color directly",
+        "Mg²⁺ coordinates with the 4 nitrogens of the porphyrin ring, enabling electron delocalization and light absorption at specific wavelengths",
+        "Mg²⁺ is the most abundant metal in soil",
+        "Mg²⁺ is needed to bond chlorophyll to the thylakoid membrane"
+      ],
+      ans: 1,
+      exp: "Mg²⁺ sits in the center of the chlorophyll porphyrin ring, held by coordination bonds to 4 nitrogen atoms. This metal coordination stabilizes the extended π electron system of the porphyrin, enabling the specific wavelength absorption (~430 nm blue and ~680 nm red) that drives photosynthesis. Fe²⁺ serves the analogous role in heme (hemoglobin). Without Mg²⁺, chlorophyll cannot form."
+    },
+    {
+      q: "Why do plants show chlorosis (yellowing) when Mg²⁺ is deficient, starting with OLDER leaves?",
+      opts: [
+        "Mg²⁺ deficiency causes root damage first, affecting old leaves",
+        "Mg²⁺ is mobile in plants; deficiency causes redistribution from older leaves to new growth, depleting old leaves first",
+        "Older leaves are more exposed to sunlight and photobleach chlorophyll",
+        "Old leaves have higher Mg²⁺ demand"
+      ],
+      ans: 1,
+      exp: "Mg²⁺ is a mobile nutrient in plants. When deficient, the plant redistributes Mg²⁺ from older (lower) leaves to younger actively growing tissues — sacrificing old leaves to sustain new growth. This is why chlorosis (chlorophyll breakdown → yellowing) appears in older leaves first with Mg deficiency. Compare with Fe deficiency: Fe is IMMOBILE → yellowing starts in young leaves (interveinal chlorosis in young leaves)."
+    },
+    {
+      q: "The physiologically active form of ATP in enzymatic reactions is:",
+      opts: ["ATP⁴⁻ (fully ionized form)", "Mg-ATP²⁻ complex", "Ca-ATP complex", "Free ATP with Na⁺"],
+      ans: 1,
+      exp: "ATP at physiological pH exists as ATP⁴⁻ (fully deprotonated). However, essentially all enzymatic reactions use Mg-ATP²⁻, where Mg²⁺ chelates the β and γ phosphate groups. This Mg²⁺ complexation: (1) reduces the repulsion between negatively charged phosphates, making the terminal phosphate more electrophilic (better leaving group), (2) correctly orients ATP in the enzyme active site, and (3) stabilizes the transition state."
+    }
+  ]
+},
+
+{
+  id: 10, unit: 2,
+  icon: "🔴",
+  title: "Iron in Biological Systems: Transport & Storage",
+  duration: "~2 hrs",
+  pyqTag: "Exam Staple",
+  sections: [
+    {
+      heading: "Iron as a Biological Metal",
+      body: `<p>Iron is arguably the most important transition metal in biology, serving in both oxygen transport/storage and electron transfer chains. The adult body contains ~4–5g of total iron, distributed as follows:</p>
+      <table class="chem-table"><thead><tr><th>Location/Form</th><th>Amount</th><th>% Total</th></tr></thead>
+      <tbody>
+      <tr><td>Hemoglobin (RBCs)</td><td>~2600 mg</td><td>~65%</td></tr>
+      <tr><td>Myoglobin (muscle)</td><td>~400 mg</td><td>~10%</td></tr>
+      <tr><td>Ferritin/Hemosiderin (stores)</td><td>~1000 mg</td><td>~25%</td></tr>
+      <tr><td>Transferrin (transport)</td><td>~3–4 mg</td><td>&lt;0.1%</td></tr>
+      <tr><td>Enzymes (cytochromes, etc.)</td><td>~8 mg</td><td>~0.2%</td></tr>
+      </tbody></table>
+      <p><strong>Redox Chemistry of Iron:</strong> Iron can exist as Fe²⁺ (ferrous) or Fe³⁺ (ferric). This facile interconversion makes it ideal for electron transfer. However, free Fe²⁺ + H₂O₂ → Fe³⁺ + OH• + OH⁻ (Fenton reaction) — generates highly reactive hydroxyl radicals that damage DNA, proteins, and lipids. This is why iron MUST be kept bound to proteins.</p>`,
+    },
+    {
+      heading: "Iron Transport: Transferrin",
+      body: `<p><strong>Transferrin</strong> is the main plasma iron transport protein (glycoprotein, ~80 kDa). It can bind 2 Fe³⁺ ions per molecule.</p>
+      <ul class="bullet-list unit2">
+      <li>Absorptive transferrin saturation: normal ~20–45%; if &gt;45% → iron overload risk; if &lt;20% → iron deficiency</li>
+      <li>Cellular uptake: Fe³⁺-transferrin binds transferrin receptor (TfR1) on cell surface → receptor-mediated endocytosis → acidification of endosome (pH drops to ~5.5) → Fe³⁺ released → reduced to Fe²⁺ by ferrireductase → exported to cytoplasm via DMT1 (Divalent Metal Transporter 1)</li>
+      <li>Apotransferrin (empty transferrin) recycled to cell surface, released back into plasma</li>
+      <li>Lactoferrin: related protein in tears, saliva, breast milk — has antimicrobial action by sequestering iron away from pathogens</li>
+      </ul>`,
+    },
+    {
+      heading: "Iron Storage: Ferritin & Hemosiderin",
+      body: `<p><strong>Ferritin</strong> is the primary intracellular iron storage protein. It is a hollow protein shell made of 24 subunits (apoferritin) that can store up to 4500 Fe³⁺ ions as an iron oxyhydroxide mineral core.</p>
+      <div class="highlight-box unit2"><div class="hb-title">🔑 Ferritin Key Facts</div>
+      • 24 subunits: 2 types — H-chain (ferroxidase activity) and L-chain (iron nucleation)<br>
+      • H-chain oxidizes Fe²⁺ → Fe³⁺ using O₂ or H₂O₂ as electron acceptor (catalytic role)<br>
+      • L-chain provides the nucleation site for Fe(O)OH mineral formation<br>
+      • Serum ferritin (&lt;12 μg/L = deficiency; &gt;300 μg/L = overload)<br>
+      • Also acts as acute phase protein — rises in inflammation (independent of iron stores)
+      </div>
+      <p><strong>Hemosiderin:</strong> An insoluble, degraded form of ferritin — found when iron stores are very high. Appears as golden-brown granules (hemosiderin deposits) in macrophages. In iron overload diseases (hemochromatosis, thalassemia), hemosiderin accumulates in liver, heart, pancreas → organ damage.</p>
+      <p><strong>Hepcidin:</strong> The master hormone regulating iron homeostasis. Produced by the liver; inhibits ferroportin (the main iron export channel) → reduces iron absorption from gut and release from stores. In anemia: hepcidin ↓ → more iron absorption. In infection: hepcidin ↑ → iron sequestration (starves pathogens of iron).</p>`,
+    }
+  ],
+  questions: [
+    {
+      q: "Transferrin binds iron in which oxidation state?",
+      opts: ["Fe⁰ (elemental)", "Fe²⁺ (ferrous)", "Fe³⁺ (ferric)", "Fe⁴⁺"],
+      ans: 2,
+      exp: "Transferrin exclusively binds Fe³⁺ (ferric iron). During iron absorption from the gut, Fe³⁺ must first be reduced to Fe²⁺ by duodenal cytochrome b (Dcytb) for transport across the enterocyte by DMT1. Once inside the enterocyte, Fe²⁺ is exported via ferroportin, then oxidized back to Fe³⁺ by hephaestin, and finally loaded onto transferrin in the plasma."
+    },
+    {
+      q: "The Fenton reaction involving iron is biologically significant because it:",
+      opts: [
+        "Helps iron bind to transferrin",
+        "Generates hydroxyl radicals (OH•) which cause oxidative damage to biomolecules",
+        "Facilitates iron storage in ferritin",
+        "Helps in hemoglobin synthesis"
+      ],
+      ans: 1,
+      exp: "Fe²⁺ + H₂O₂ → Fe³⁺ + OH• + OH⁻ (Fenton reaction). The hydroxyl radical (OH•) is the most reactive oxygen species — it attacks DNA (strand breaks, base modifications), proteins (carbonylation), and lipids (peroxidation) indiscriminately. Free intracellular iron is therefore extremely dangerous, which is why cells keep nearly all iron tightly protein-bound (transferrin, ferritin)."
+    },
+    {
+      q: "Serum ferritin level is used as a clinical marker for iron stores. A level of 6 μg/L indicates:",
+      opts: [
+        "Normal iron stores",
+        "Iron overload",
+        "Iron deficiency (normal range: 12-300 μg/L)",
+        "Hemochromatosis"
+      ],
+      ans: 2,
+      exp: "Serum ferritin < 12 μg/L indicates iron deficiency. Normal range is approximately 12-300 μg/L (men) and 12-150 μg/L (women). Ferritin reflects total body iron stores because it is secreted into plasma in proportion to intracellular ferritin. Note: ferritin is also an acute phase reactant — it can be elevated in inflammation even with iron deficiency, which can mask diagnosis."
+    },
+    {
+      q: "The H-chain subunits of ferritin have ferroxidase activity. This is important because:",
+      opts: [
+        "They reduce Fe³⁺ to Fe²⁺ for export",
+        "They oxidize Fe²⁺ → Fe³⁺, preventing toxic Fenton chemistry and enabling storage as the Fe(O)OH mineral",
+        "They bind transferrin receptor",
+        "They transport iron across cell membranes"
+      ],
+      ans: 1,
+      exp: "Ferroxidase activity of ferritin H-chain: Fe²⁺ + O₂ → Fe³⁺ + H₂O₂ (and Fe³⁺ stored as FeOOH). This is critical because: (1) Fe³⁺ is much less reactive than Fe²⁺ in Fenton chemistry, (2) storage as the mineral FeOOH sequesters iron safely, (3) the H₂O₂ produced is handled by catalase. The L-chain then provides the nucleation template for mineral crystal growth."
+    },
+    {
+      q: "Hepcidin regulates systemic iron homeostasis by:",
+      opts: [
+        "Stimulating iron absorption from the gut",
+        "Inhibiting ferroportin → reducing iron export from gut and macrophages → decreasing blood iron",
+        "Activating transferrin production in the liver",
+        "Increasing ferritin synthesis"
+      ],
+      ans: 1,
+      exp: "Hepcidin (produced by hepatocytes) binds to ferroportin (the only known iron export protein) and causes its internalization and degradation. This blocks iron export from: (1) duodenal enterocytes (↓ gut absorption), (2) macrophages recycling iron from old RBCs, (3) hepatocytes (storage). High hepcidin = less blood iron. Hepcidin rises in iron overload and inflammation; falls in iron deficiency and hypoxia. It is the master regulator."
+    }
+  ]
+},
+
+{
+  id: 11, unit: 2,
+  icon: "☠️",
+  title: "Toxic Metal Ions (Hg, Pb, Cd, As) & Dose-Response",
+  duration: "~2 hrs",
+  pyqTag: "PYQ Favourite",
+  sections: [
+    {
+      heading: "General Mechanisms of Metal Toxicity",
+      body: `<p>Toxic heavy metals cause damage through several overlapping mechanisms:</p>
+      <ul class="bullet-list unit2">
+      <li><strong>Sulfhydryl (-SH) binding:</strong> Hg, Pb, Cd, As all have very high affinity for -SH (thiol) groups in proteins. These are present in enzyme active sites (e.g., Hg²⁺ inhibits pyruvate dehydrogenase), structural proteins, and antioxidant molecules (glutathione)</li>
+      <li><strong>Essential metal displacement:</strong> Toxic metals can mimic essential metals in binding sites. Pb²⁺ displaces Ca²⁺ (same charge, similar radius) from calmodulin, ATPases, and bone mineral. Cd²⁺ displaces Zn²⁺ from zinc-finger proteins</li>
+      <li><strong>Oxidative stress:</strong> Redox-active metals (As, Cr) generate reactive oxygen species</li>
+      <li><strong>Enzyme inhibition:</strong> Specific enzyme targets for each metal</li>
+      </ul>`,
+    },
+    {
+      heading: "Mercury (Hg), Lead (Pb), Cadmium (Cd), Arsenic (As)",
+      body: `<div class="highlight-box unit2"><div class="hb-title">💧 Mercury (Hg)</div>
+      Forms: Inorganic (Hg⁰, Hg²⁺), Organic (methylmercury CH₃Hg⁺ — most toxic)<br>
+      Methylmercury: Crosses blood-brain barrier easily → neurotoxin. Paresthesia, ataxia, visual/hearing loss → Minamata disease (Japan, 1950s — industrial Hg discharge into bay, bioaccumulated in fish)<br>
+      Mechanism: CH₃Hg⁺ binds selectively to selenocysteine residues in antioxidant selenoenzymes (glutathione peroxidase) → oxidative damage in CNS<br>
+      Treatment: DMSA (dimercaptosuccinic acid) — chelates Hg²⁺ for urinary excretion
+      </div>
+      <div class="highlight-box unit2"><div class="hb-title">🔩 Lead (Pb)</div>
+      Sources: Old paint, leaded gasoline, water pipes<br>
+      Mechanism: Pb²⁺ substitutes for Ca²⁺ and Zn²⁺ in multiple enzymes. Inhibits δ-ALA dehydratase and ferrochelatase → blocks heme synthesis → microcytic anemia. Also inhibits Na⁺/K⁺-ATPase and disrupts dopamine signaling → neurotoxicity (especially in children: IQ reduction, behavioral problems)<br>
+      Accumulates in bone (as Pb₃(PO₄)₂) — half-life ~27 years in bone<br>
+      Blood lead: &lt;5 μg/dL (normal); &gt;70 μg/dL → encephalopathy
+      </div>
+      <div class="highlight-box unit2"><div class="hb-title">🚬 Cadmium (Cd)</div>
+      Sources: Cigarette smoke (#1 source), food (contaminated rice/wheat), smelting<br>
+      Target organ: Kidney (proximal tubule) — causes renal tubular dysfunction<br>
+      Mechanism: Cd²⁺ displaces Zn²⁺ from metallothionein → Cd-metallothionein complex accumulates in kidney → tubular damage → "Itai-Itai" disease (Japan) → osteoporosis + kidney failure<br>
+      Half-life: 10–30 years in kidney → bioaccumulates throughout life<br>
+      Cd carcinogenic (Group 1 IARC — lung, kidney, prostate cancer)
+      </div>
+      <div class="highlight-box unit2"><div class="hb-title">🧪 Arsenic (As)</div>
+      Forms: Inorganic (As³⁺ arsenite, As⁵⁺ arsenate) — both toxic; Organic arsenicals (generally less toxic)<br>
+      As³⁺ (arsenite): Highest toxicity. Binds vicinal dithiols (-SH groups on adjacent cysteines). Inhibits pyruvate dehydrogenase (PDH), α-ketoglutarate dehydrogenase → blocks TCA cycle → energy failure<br>
+      As⁵⁺ (arsenate): Substitutes for phosphate in ATP synthesis → forms ADP-arsenate (unstable) → uncouples oxidative phosphorylation<br>
+      Chronic exposure: skin lesions (arsenical keratosis), blackfoot disease (peripheral vascular disease), carcinogen (skin, lung, bladder)<br>
+      Bangladesh groundwater crisis — millions exposed to naturally occurring As³⁺ in well water
+      </div>`,
+    },
+    {
+      heading: "Dose-Response Relationships",
+      body: `<p>The dose-response relationship describes how the magnitude of a biological response changes with the dose of a substance. It is the foundation of toxicology (Paracelsus: "The dose makes the poison").</p>
+      <div class="highlight-box unit2"><div class="hb-title">📈 Key Parameters of Dose-Response Curves</div>
+      <strong>LD₅₀</strong> = Lethal Dose for 50% of test animals — the standard measure of acute toxicity<br>
+      <strong>EC₅₀</strong> = Effective Concentration for 50% of maximum response<br>
+      <strong>NOAEL</strong> = No Observed Adverse Effect Level — highest dose with no detected harm<br>
+      <strong>LOAEL</strong> = Lowest Observed Adverse Effect Level<br>
+      <strong>Therapeutic index (TI)</strong> = LD₅₀ / ED₅₀ — higher = safer drug
+      </div>
+      <p><strong>Shape of dose-response curves:</strong></p>
+      <ul class="bullet-list unit2">
+      <li><strong>Monotonic sigmoidal (S-shaped):</strong> Most toxins — no effect at low doses, then steep rise, then plateau. Characteristic: threshold, linear range, saturation</li>
+      <li><strong>Non-monotonic (inverted U or J-shaped):</strong> Hormesis phenomenon — some essential elements are stimulatory at low doses but toxic at high doses (e.g., Zn, Se, Cu). Also seen with hormones, endocrine disruptors</li>
+      <li><strong>Linear no-threshold (LNT):</strong> Used for carcinogens and radiation — assumes any dose has some risk (no safe dose)</li>
+      </ul>`,
+    }
+  ],
+  questions: [
+    {
+      q: "Methylmercury (CH₃Hg⁺) is more dangerous than inorganic mercury because:",
+      opts: [
+        "It contains more mercury per molecule",
+        "It readily crosses the blood-brain barrier and bioaccumulates in the CNS",
+        "It directly dissolves cell membranes",
+        "It has lower molecular weight"
+      ],
+      ans: 1,
+      exp: "CH₃Hg⁺ (methylmercury) is lipophilic due to the methyl group — it can cross biological membranes easily, including the blood-brain barrier. Inorganic Hg²⁺ cannot easily cross the BBB. Once in the CNS, methylmercury binds selenocysteine residues in selenoenzymes (e.g., glutathione peroxidase) and -SH groups in proteins → neurodegeneration. This was demonstrated tragically in the Minamata disease outbreak in Japan."
+    },
+    {
+      q: "Lead (Pb²⁺) inhibits heme synthesis by blocking the enzymes:",
+      opts: [
+        "Hemoglobin and myoglobin synthesis",
+        "δ-ALA dehydratase and ferrochelatase → buildup of δ-ALA and protoporphyrin IX → anemia",
+        "Transferrin receptor and ferritin",
+        "Carbonic anhydrase and cytochrome c"
+      ],
+      ans: 1,
+      exp: "Lead inhibits two key enzymes in the heme synthesis pathway: (1) δ-ALA dehydratase (ALA dehydratase/porphobilinogen synthase) — early in the pathway, and (2) ferrochelatase — the final step that inserts Fe²⁺ into protoporphyrin IX. The result: elevated δ-ALA in urine (diagnostic marker), elevated free erythrocyte protoporphyrin (FEP), and reduced hemoglobin synthesis → microcytic anemia."
+    },
+    {
+      q: "The LD₅₀ of a substance is:",
+      opts: [
+        "The dose that causes maximum toxicity in 50% of subjects",
+        "The lethal dose for 50% of the test animal population",
+        "The concentration needed for 50% enzyme inhibition",
+        "50% of the no-effect level"
+      ],
+      ans: 1,
+      exp: "LD₅₀ = Lethal Dose 50% = the dose of a substance that kills exactly 50% of a test animal population under defined conditions. It is the standard measure of acute lethality. Lower LD₅₀ = more toxic. Example: Ricin LD₅₀ ≈ 0.001 mg/kg (extremely toxic); table salt LD₅₀ ≈ 3000 mg/kg (practically non-toxic). It's expressed as mg of substance per kg of body weight."
+    },
+    {
+      q: "Arsenic (As³⁺) disrupts cellular energy production by:",
+      opts: [
+        "Blocking DNA replication",
+        "Binding vicinal dithiol groups in pyruvate dehydrogenase and α-ketoglutarate dehydrogenase, blocking the TCA cycle",
+        "Competitive inhibition of ATP synthase",
+        "Displacing Fe²⁺ from hemoglobin"
+      ],
+      ans: 1,
+      exp: "As³⁺ (arsenite) has extremely high affinity for vicinal dithiols (two adjacent -SH groups). Pyruvate dehydrogenase complex (PDH) and α-ketoglutarate dehydrogenase both require lipoic acid cofactors which have vicinal dithiol groups in their reduced form. As³⁺ binds these dithiols forming stable 5- or 6-membered chelate rings → enzyme completely inhibited → pyruvate/α-KG cannot enter TCA → severe energy depletion."
+    },
+    {
+      q: "The concept of 'hormesis' in dose-response relationships refers to:",
+      opts: [
+        "All substances being toxic at any dose",
+        "A biphasic response where low doses are stimulatory/beneficial but high doses are inhibitory/toxic",
+        "Linear extrapolation from high-dose to low-dose toxicity",
+        "Tolerance developing with repeated exposure"
+      ],
+      ans: 1,
+      exp: "Hormesis describes a non-monotonic, biphasic dose-response: at LOW doses → stimulation, benefit, or activation; at HIGH doses → inhibition, toxicity. Examples: Zinc (essential at ~10 mg/day; toxic at >150 mg/day), radiation (very low doses may be hormetic in some models), alcohol (very low dose may have some cardiovascular benefit → toxic at higher doses). Hormesis challenges the simple threshold or linear model of toxicology. Many essential trace elements show hormesis."
+    }
+  ]
+}
+
+]; // end TOPICS
+
+// =====================================================================
+// FLASHCARDS DATA
+// =====================================================================
+
+const FLASHCARDS = [
+  { unit: 1, front: "What is Lattice Enthalpy?", back: "<strong>The energy required to separate 1 mole of ionic solid into its constituent gaseous ions at infinite separation.</strong> Always positive (endothermic). Increases with higher ionic charge and smaller ionic size. NaCl = +787 kJ/mol; MgO = +3791 kJ/mol." },
+  { unit: 1, front: "Born-Haber Cycle steps for NaCl", back: "<strong>5 steps:</strong><br>1. Sublimation of Na (+108)<br>2. Dissociation of ½Cl₂ (+121)<br>3. Ionization of Na (+496)<br>4. Electron affinity of Cl (−349)<br>5. Lattice formation (−787)<br>Sum = −411 kJ/mol = ΔHf of NaCl ✓" },
+  { unit: 1, front: "State Fajan's Rules", back: "<strong>Covalent character increases when:</strong><br>1. Cation is small and highly charged (high polarizing power)<br>2. Anion is large and highly charged (high polarizability)<br>3. Cation has 18-electron configuration (poor nuclear shielding)" },
+  { unit: 1, front: "Madelung constant for rock salt structure?", back: "<strong>M = 1.748</strong> for NaCl-type structure. It accounts for ALL electrostatic interactions in the crystal (not just nearest neighbours). Fluorite structure (CaF₂): M = 2.519." },
+  { unit: 1, front: "Why is O₂ paramagnetic? (MO theory explanation)", back: "MO configuration: ...(π2p)⁴(σ2p)²(π*2p)². The last 2 electrons go into two <strong>degenerate π*2p orbitals — one each</strong> (Hund's rule). These 2 unpaired electrons make O₂ paramagnetic. VB theory fails to predict this." },
+  { unit: 1, front: "Bond order of NO, NO⁺, CO, N₂?", back: "<strong>NO</strong> = 2.5 (paramagnetic)<br><strong>NO⁺</strong> = 3.0 (diamagnetic, isoelectronic with N₂)<br><strong>CO</strong> = 3.0 (diamagnetic, isoelectronic with N₂)<br><strong>N₂</strong> = 3.0 (diamagnetic, triple bond)" },
+  { unit: 1, front: "VSEPR shape of ClF₃?", back: "<strong>T-shaped</strong>. Cl has 7 valence electrons + 3 from 3F bonds + 1 for negative charge = 5 electron pairs (3 bonding + 2 lone pairs). With 5 electron domains → trigonal bipyramidal electron geometry. 2 lone pairs occupy equatorial positions (less LP-LP repulsion) → T-shape. Bond angles < 90°." },
+  { unit: 1, front: "Hybridization of N in NO₃⁻, NO₂⁺, NH₄⁺?", back: "<strong>NO₃⁻:</strong> sp² (3 bonding domains, 0 LP)<br><strong>NO₂⁺:</strong> sp (2 bonding domains, 0 LP → linear)<br><strong>NH₄⁺:</strong> sp³ (4 bonding domains, 0 LP → tetrahedral)" },
+  { unit: 1, front: "Why does NF₃ have a smaller dipole moment than NH₃?", back: "In <strong>NH₃</strong>: bond moments (N is more electronegative than H → dipole toward N) and lone pair moment reinforce → large μ (1.49 D).<br>In <strong>NF₃</strong>: F is more electronegative → bond moments point away from N; lone pair moment points toward N → they partially cancel → small μ (0.24 D)." },
+  { unit: 1, front: "% Ionic character formula", back: "<strong>% ionic = (μ_observed / μ_theoretical) × 100</strong><br>where μ_theoretical = e × d (bond length)<br>Or by Hanney-Smith: <strong>% ionic = 16(Δχ) + 3.5(Δχ)²</strong><br>HCl: Δχ=0.9 → ~17% ionic character" },
+  { unit: 1, front: "Difference between σ and π bonds?", back: "<strong>σ bond:</strong> Head-on overlap, along internuclear axis, cylindrically symmetric, free rotation possible, stronger.<br><strong>π bond:</strong> Lateral (sideways) overlap, perpendicular to internuclear axis, has nodal plane containing the bond axis, restricts rotation, weaker than σ." },
+  { unit: 1, front: "London dispersion forces vs. dipole-dipole forces", back: "<strong>London (dispersion):</strong> Present in ALL molecules; arise from instantaneous dipoles; increase with molecular size/polarizability; ONLY force in non-polar molecules (noble gases, alkanes, I₂).<br><strong>Dipole-dipole (Keesom):</strong> Only in polar molecules; permanent dipole alignment; stronger than London for same-size polar vs non-polar." },
+  { unit: 1, front: "Why does ice float on water?", back: "In ice, each water molecule forms <strong>4 hydrogen bonds in a tetrahedral arrangement</strong> → open hexagonal lattice with large interstitial spaces. Density of ice (~0.917 g/cm³) < liquid water (~1.0 g/cm³) because liquid water can partially break these H-bonds and pack more closely. Hence ice floats — critical for aquatic life." },
+  { unit: 1, front: "MO energy level order for N₂ vs O₂", back: "<strong>N₂ (Z≤7), s-p mixing significant:</strong> ...σ2s < σ*2s < π2p < σ2p < π*2p < σ*2p<br>(π2p filled BEFORE σ2p)<br><strong>O₂, F₂ (Z≥8), s-p mixing negligible:</strong> ...σ2s < σ*2s < σ2p < π2p < π*2p < σ*2p<br>(σ2p filled BEFORE π2p)" },
+  { unit: 1, front: "Resonance energy of benzene", back: "Benzene resonance energy ≈ <strong>151 kJ/mol</strong> — the extra stabilization compared to hypothetical cyclohexatriene. This is measured as: ΔHhydrogenation(calculated for 3 C=C bonds) − ΔHhydrogenation(actual benzene). The delocalized π system over 6 carbons makes benzene thermodynamically much more stable." },
+  { unit: 1, front: "What is the Born exponent (n) and what does it represent?", back: "The Born exponent <strong>n</strong> in the Born-Landé equation accounts for <strong>short-range repulsive forces between electron clouds</strong>. Values: He-like = 5, Ne-like = 7, Ar-like = 9, Kr-like = 10, Xe-like = 12. For a compound with mixed configs, use average. The term (1 − 1/n) corrects the pure Coulombic lattice energy downward." },
+  { unit: 1, front: "Rules for LCAO combination to form MOs", back: "Three conditions:<br>1. <strong>Similar energy</strong> — combining AOs must have comparable energies<br>2. <strong>Same symmetry</strong> about the molecular axis<br>3. <strong>Significant overlap</strong> (non-zero overlap integral)<br>Result: n AOs always → n MOs (bonding + antibonding). Electrons fill lowest energy MOs first (Aufbau), Hund's rule applies to degenerate MOs." },
+  { unit: 1, front: "Metallic bonding and electrical conductivity", back: "Metals consist of <strong>positive kernels in a sea of delocalized valence electrons</strong>. These free electrons can move under an applied electric field → electrical conduction. Increasing temperature → more lattice vibrations → electrons scatter more → resistance increases (opposite to semiconductors). Resistance of metals increases with temperature." },
+  { unit: 1, front: "Explain the anomalously high bp of H₂O vs H₂S", back: "H₂O bp = 100°C; H₂S bp = −60°C. Despite H₂S having more electrons (higher London forces), H₂O has <strong>extensive intermolecular hydrogen bonding</strong> (each H₂O forms up to 4 H-bonds — 2 donor, 2 acceptor). H₂S cannot form H-bonds (S not electronegative enough, too large). H-bonds in water require ~20 kJ/mol to break vs much weaker vdW forces in H₂S." },
+  { unit: 1, front: "What is the Madelung constant and why does it vary?", back: "Madelung constant M is the <strong>geometric sum of all electrostatic interactions in a crystal lattice</strong>. It varies with crystal structure (coordination geometry): Rock salt (M=1.748), CsCl (M=1.763), zinc blende (M=1.638), fluorite (M=2.519). Higher M → more electrostatic stabilization per ion pair → higher lattice enthalpy." },
+
+  // UNIT 2
+  { unit: 2, front: "Na⁺/K⁺ pump: stoichiometry per ATP?", back: "<strong>3 Na⁺ OUT, 2 K⁺ IN</strong> per ATP hydrolyzed. Electrogenic (net −1 charge outward). Uses ~20-30% of resting cell ATP. Inhibited by ouabain/digoxin (cardiac glycosides). Creates the electrochemical gradients essential for nerve impulses, muscle contraction, and secondary active transport." },
+  { unit: 2, front: "Normal intracellular vs extracellular [Na⁺] and [K⁺]", back: "<strong>Na⁺:</strong> Intracellular ~10-15 mM; Extracellular ~140 mM (10× gradient, OUT > IN)<br><strong>K⁺:</strong> Intracellular ~140 mM; Extracellular ~4 mM (~35× gradient, IN > OUT)<br>Maintained by Na⁺/K⁺-ATPase — pumps Na⁺ out and K⁺ in against concentration gradients." },
+  { unit: 2, front: "Two roles of Ca²⁺ in biology (PYQ)", back: "<strong>Structural:</strong> Bone/teeth as hydroxyapatite Ca₁₀(PO₄)₆(OH)₂; Ca²⁺ cross-links pectins in plant cell walls.<br><strong>Blood clotting:</strong> Bridges γ-carboxylated clotting factors (II, VII, IX, X) to platelet phospholipid surfaces — essential for coagulation cascade. EDTA chelates Ca²⁺ → anticoagulation." },
+  { unit: 2, front: "Role of Mg²⁺ in chlorophyll", back: "Mg²⁺ is at the center of the porphyrin ring in chlorophyll, coordinated to <strong>4 nitrogen atoms</strong> of the pyrrole rings. It stabilizes the π-electron system → specific light absorption at ~430 nm (blue) and ~680 nm (red). Without Mg²⁺, chlorophyll cannot form → Mg deficiency → chlorosis (yellowing) starting in OLD leaves (mobile element)." },
+  { unit: 2, front: "Why does the Na⁺/K⁺ pump use the E1-E2 mechanism?", back: "The pump exists in two conformations:<br><strong>E1:</strong> Cytoplasmic face open, HIGH affinity for Na⁺ (binds 3 Na⁺) → phosphorylated by ATP<br><strong>E2:</strong> Extracellular face open, LOW affinity for Na⁺ (releases Na⁺), HIGH affinity for K⁺ (binds 2 K⁺) → dephosphorylated → reverts to E1 releasing K⁺ inside. This alternating access mechanism ensures unidirectional transport." },
+  { unit: 2, front: "Mechanism of mercury toxicity", back: "<strong>CH₃Hg⁺ (methylmercury):</strong> Crosses blood-brain barrier; preferentially binds selenocysteine in glutathione peroxidase → oxidative damage in CNS → neurodegeneration (Minamata disease).<br><strong>Hg²⁺:</strong> Binds -SH groups in proteins; kidney target. <strong>Treatment:</strong> DMSA (chelation therapy)." },
+  { unit: 2, front: "Mechanism of lead (Pb) toxicity", back: "Pb²⁺ substitutes for Ca²⁺ and Zn²⁺. Key effects:<br>1. Inhibits <strong>δ-ALA dehydratase + ferrochelatase</strong> → blocks heme synthesis → anemia<br>2. Inhibits Na⁺/K⁺-ATPase → neurological effects<br>3. Disrupts dopamine neurotransmission → IQ ↓, behavioral problems in children<br>Stores in bone (half-life ~27 years). Marker: blood Pb level, urine δ-ALA." },
+  { unit: 2, front: "Transferrin vs Ferritin: function comparison", back: "<strong>Transferrin:</strong> Plasma TRANSPORT protein, binds 2 Fe³⁺/molecule, ~20-45% saturation normal. Delivers iron to cells via receptor-mediated endocytosis via TfR1.<br><strong>Ferritin:</strong> Intracellular STORAGE protein, 24 subunits, stores up to 4500 Fe³⁺ as FeOOH mineral. H-chain = ferroxidase; L-chain = nucleation. Serum ferritin <12 μg/L = deficiency." },
+  { unit: 2, front: "Itai-Itai disease: cause and mechanism", back: "<strong>Cause:</strong> Cadmium (Cd²⁺) poisoning from contaminated rice in Toyama, Japan (1950s-60s) — Cd from mine drainage into irrigation water.<br><strong>Mechanism:</strong> Cd²⁺ accumulates in kidney → damages proximal tubules → loss of Ca²⁺, phosphate, amino acids in urine → severe osteomalacia + osteoporosis → painful bone fractures (Itai-Itai = 'ouch-ouch' in Japanese)." },
+  { unit: 2, front: "Dose-response key parameters: LD₅₀, NOAEL, TI", back: "<strong>LD₅₀:</strong> Lethal Dose for 50% of test population (mg/kg body weight)<br><strong>NOAEL:</strong> No Observed Adverse Effect Level — highest dose with no harm detected<br><strong>LOAEL:</strong> Lowest Observed Adverse Effect Level<br><strong>Therapeutic Index (TI) = LD₅₀/ED₅₀</strong> — higher TI = safer drug<br>Hormesis: low dose stimulates, high dose inhibits (inverted U-curve)" },
+  { unit: 2, front: "Arsenic toxicity mechanism: As³⁺ vs As⁵⁺", back: "<strong>As³⁺ (arsenite):</strong> Binds vicinal dithiols (adjacent -SH groups) → inhibits pyruvate dehydrogenase and α-ketoglutarate dehydrogenase → blocks TCA cycle. Also inhibits thioredoxin reductase.<br><strong>As⁵⁺ (arsenate):</strong> Mimics phosphate → forms ADP-arsenate (unstable analogue of ATP) → uncouples oxidative phosphorylation → energy depletion." },
+  { unit: 2, front: "Classification of biological trace elements by type", back: "<strong>Essential bulk (&gt;0.01%):</strong> O,C,H,N,Ca,P,K,S,Na,Cl,Mg<br><strong>Trace (0.0001–0.01%):</strong> Fe,Zn,Cu,I,Mn,Co,Mo,Se,Cr,F<br><strong>Ultra-trace (&lt;0.0001%):</strong> V,Si,Ni,Li,Sn<br><strong>Toxic metals (no known essential role at any level):</strong> Hg, Pb, Cd (in mammals)" },
+  { unit: 2, front: "Role of Ca²⁺ as a second messenger", back: "Resting cytoplasmic [Ca²⁺] ≈ 100 nM. Upon stimulation: rises to ~1 μM from ER release (IP₃/ryanodine receptors) or extracellular entry.<br>Ca²⁺ binds <strong>calmodulin</strong> → activates calmodulin-dependent kinases → downstream effects: muscle contraction (binds troponin C), exocytosis, cell division, enzyme activation. Ca²⁺ is restored by Ca²⁺-ATPase (SERCA) pumps." },
+  { unit: 2, front: "Hepcidin: master iron regulator", back: "Hepcidin (liver peptide hormone) <strong>inhibits ferroportin</strong> (the only known iron export channel on cells). Effects:<br>• ↑ Hepcidin → ferroportin degraded → ↓iron absorption from gut, ↓iron release from macrophages → ↓blood iron<br>• ↓ Hepcidin (iron deficiency, hypoxia, anemia) → more ferroportin → more iron absorption<br>• ↑ Hepcidin (infection, inflammation) → iron sequestration (starves pathogens)" },
+  { unit: 2, front: "Geochemical effect on seawater vs intracellular ion composition", back: "Early life evolved in ocean. Seawater: <strong>high Na⁺, Cl⁻ → adopted as extracellular ions</strong>. K⁺ is higher in soil/rocks relative to ocean → selectively concentrated intracellularly. Ca²⁺ high in seawater but excluded from cytoplasm (would precipitate phosphates). The Na⁺/K⁺-ATPase evolved to maintain this geochemically-influenced ionic asymmetry." },
+  { unit: 2, front: "Ferritin structure: H-chain vs L-chain subunits", back: "Ferritin = 24 subunits (mix of H and L type) forming a hollow sphere. Can store up to <strong>4500 Fe³⁺ ions as FeOOH mineral</strong>.<br><strong>H-chain:</strong> Has ferroxidase activity (oxidizes Fe²⁺→Fe³⁺, prevents Fenton reaction). More in heart.<br><strong>L-chain:</strong> Provides nucleation site for mineral iron core. More in liver/spleen. Ratio varies by tissue." },
+  { unit: 2, front: "Why are Hg, Pb, Cd especially toxic? (Biological basis)", back: "These heavy metals are <strong>geochemically rare in bioavailable form</strong> → biological systems never evolved detoxification mechanisms.<br>They have high affinity for -SH groups → inhibit enzymes.<br>They mimic essential metals (Pb→Ca, Cd→Zn) → displace them.<br>They have very long biological half-lives (Cd: 10-30y in kidney; Pb: 27y in bone) → bioaccumulate throughout life.<br>Extremely low NOAEL → toxic at trace levels." },
+  { unit: 2, front: "Na⁺/K⁺-ATPase: electrogenic nature and its significance", back: "The pump moves <strong>3 Na⁺ out and 2 K⁺ in</strong> → net outward movement of +1 charge per cycle → makes pump electrogenic. Contributes ~−3 to −5 mV to resting membrane potential (RMP ~−70 mV total). This slight hyperpolarization affects: threshold for action potentials, neurotransmitter receptor sensitivity, and cardiac rhythm. Major energy consumer (~20-30% of resting ATP)." },
+  { unit: 2, front: "Lactoferrin: structure and function", back: "<strong>Lactoferrin</strong> is a transferrin-related glycoprotein found in tears, saliva, nasal secretions, and breast milk. Like transferrin, it binds 2 Fe³⁺/molecule but has much higher affinity at low pH.<br>Antimicrobial mechanism: sequesters iron away from bacteria (iron deprivation) and directly disrupts bacterial membranes.<br>Also: immunomodulatory, anti-inflammatory. Critical component of innate immunity at mucosal surfaces." },
+  { unit: 2, front: "Dose-response: Hormesis phenomenon with examples", back: "<strong>Hormesis:</strong> Biphasic dose-response where low doses are stimulatory/beneficial and high doses are inhibitory/toxic (inverted U or J-shaped curve).<br>Examples: Zinc (essential ~10 mg/day; toxic >150 mg/day), Selenium (essential ~60 μg/day; toxic >400 μg/day), Copper, Fluoride. Also: ionizing radiation (some models), many pharmaceutical drugs. Challenges simple linear/threshold toxicology models." },
+];
+
+// =====================================================================
+// STATE
+// =====================================================================
+let currentView = 'dashboard'; // 'dashboard', 'topic', 'flashcard'
+let currentTopicId = null;
+let masteryState = {}; // topicId: {score: N, mastered: bool}
+let quizState = {}; // topicId: {current: N, answers: [], mode: 'quiz'/'result', showExp: bool}
+let fcIndex = 0;
+let fcFlipped = false;
+let fcSeen = new Set();
+
+// Init mastery state
+TOPICS.forEach(t => { masteryState[t.id] = { score: 0, mastered: false }; });
+
+// =====================================================================
+// RENDER
+// =====================================================================
+
+function renderSidebar() {
+  const container = document.getElementById('topic-list');
+  const u1Topics = TOPICS.filter(t => t.unit === 1);
+  const u2Topics = TOPICS.filter(t => t.unit === 2);
+
+  let html = `<div class="unit-section">
+    <div class="unit-label"><span class="unit-badge unit1-badge">Unit I</span> Chemical Bonding</div>`;
+  u1Topics.forEach(t => {
+    const ms = masteryState[t.id];
+    const isActive = currentTopicId === t.id;
+    const dotClass = ms.mastered ? 'mastery-dot mastered' : (ms.score > 0 ? 'mastery-dot partial' : 'mastery-dot');
+    html += `<button class="topic-btn ${isActive ? 'active' : ''}" onclick="goToTopic(${t.id})">
+      <span class="topic-icon">${t.icon}</span>
+      <span class="topic-name">${t.title}</span>
+      <span class="${dotClass}"></span>
+    </button>`;
+  });
+
+  html += `</div><div class="unit-section">
+    <div class="unit-label"><span class="unit-badge unit2-badge">Unit II</span> Elements in Bio Systems</div>`;
+  u2Topics.forEach(t => {
+    const ms = masteryState[t.id];
+    const isActive = currentTopicId === t.id;
+    const dotClass = ms.mastered ? 'mastery-dot unit2 mastered' : (ms.score > 0 ? 'mastery-dot partial' : 'mastery-dot');
+    html += `<button class="topic-btn ${isActive ? 'active unit2' : ''}" onclick="goToTopic(${t.id})">
+      <span class="topic-icon">${t.icon}</span>
+      <span class="topic-name">${t.title}</span>
+      <span class="${dotClass}"></span>
+    </button>`;
+  });
+  html += `</div>`;
+  container.innerHTML = html;
+}
+
+function updateProgress() {
+  const total = TOPICS.length;
+  const mastered = Object.values(masteryState).filter(m => m.mastered).length;
+  const pct = Math.round((mastered / total) * 100);
+  document.getElementById('progress-pct').textContent = pct + '%';
+  document.getElementById('progress-fill').style.width = pct + '%';
+  const dashMastered = document.getElementById('dash-mastered');
+  if (dashMastered) dashMastered.textContent = mastered;
+}
+
+function goToDashboard() {
+  currentTopicId = null;
+  currentView = 'dashboard';
+  document.getElementById('dashboard').style.display = 'block';
+  document.getElementById('topic-view').classList.add('hidden');
+  document.getElementById('flashcard-view').classList.add('hidden');
+  renderSidebar();
+  updateProgress();
+}
+
+function goToTopic(id) {
+  currentTopicId = id;
+  currentView = 'topic';
+  const topic = TOPICS[id];
+  document.getElementById('dashboard').style.display = 'none';
+  document.getElementById('flashcard-view').classList.add('hidden');
+  document.getElementById('topic-view').classList.remove('hidden');
+
+  // Init quiz state if needed
+  if (!quizState[id]) {
+    quizState[id] = { current: 0, answers: [], mode: 'quiz', showExp: false, selectedOpt: null };
+  }
+
+  renderTopicView(topic);
+  renderSidebar();
+  document.getElementById('main').scrollTop = 0;
+}
+
+function renderTopicView(topic) {
+  const ms = masteryState[topic.id];
+  const isU2 = topic.unit === 2;
+  const unitClass = isU2 ? 'unit2' : '';
+
+  let masteryBadge = '';
+  if (ms.mastered) {
+    masteryBadge = `<span class="mastery-badge mb-mastered ${unitClass}">⭐ Mastered</span>`;
+  } else if (ms.score > 0) {
+    masteryBadge = `<span class="mastery-badge mb-partial">🔄 ${ms.score}/5 — Keep Going</span>`;
+  } else {
+    masteryBadge = `<span class="mastery-badge mb-locked">🔒 Not Started</span>`;
+  }
+
+  let sectionsHTML = '';
+  topic.sections.forEach(sec => {
+    sectionsHTML += `<div class="content-section">
+      <h3>${sec.heading}</h3>
+      <div class="content-body ${unitClass}">${sec.body}</div>
+    </div>`;
+  });
+
+  // Quiz section
+  let quizHTML = renderQuizSection(topic);
+
+  // Next topic
+  let nextTopicHTML = '';
+  const nextId = topic.id + 1;
+  if (nextId < TOPICS.length) {
+    const next = TOPICS[nextId];
+    nextTopicHTML = `<button class="next-topic-btn" onclick="goToTopic(${next.id})">
+      <div><div class="nt-label">Next Topic →</div><div class="nt-title">${next.icon} ${next.title}</div></div>
+      <span style="color:var(--muted)">›</span>
+    </button>`;
+  }
+
+  const prevId = topic.id - 1;
+  let prevTopicHTML = '';
+  if (prevId >= 0) {
+    const prev = TOPICS[prevId];
+    prevTopicHTML = `<button class="next-topic-btn" onclick="goToTopic(${prev.id})" style="margin-bottom:8px">
+      <span style="color:var(--muted)">‹</span>
+      <div style="text-align:right"><div class="nt-label">← Previous</div><div class="nt-title">${prev.icon} ${prev.title}</div></div>
+    </button>`;
+  }
+
+  document.getElementById('topic-view').innerHTML = `
+    <div>
+      <button class="back-btn" onclick="goToDashboard()">← Dashboard</button>
+    </div>
+    <div class="topic-header">
+      <div class="topic-breadcrumb">
+        <span onclick="goToDashboard()">Home</span>
+        <span>/</span>
+        <span>Unit ${topic.unit}</span>
+        <span>/</span>
+        <span>${topic.title.substring(0, 30)}...</span>
+      </div>
+      <div class="topic-title-row">
+        <h2 class="topic-title">${topic.icon} ${topic.title}</h2>
+        ${masteryBadge}
+      </div>
+      <div class="topic-meta">
+        <span>⏱ ${topic.duration}</span>
+        <span>•</span>
+        <span>${topic.questions.length} practice questions</span>
+        <span>•</span>
+        <span style="color:${isU2 ? 'var(--teal)' : 'var(--gold)'}">${topic.pyqTag}</span>
+      </div>
+    </div>
+    <div class="divider"></div>
+    ${sectionsHTML}
+    <div class="divider"></div>
+    ${quizHTML}
+    <div style="margin-top: 32px">
+      ${prevTopicHTML}
+      ${nextTopicHTML}
+    </div>
+  `;
+}
+
+function renderQuizSection(topic) {
+  const qs = quizState[topic.id];
+  const ms = masteryState[topic.id];
+  const isU2 = topic.unit === 2;
+  const btnClass = isU2 ? 'btn-primary unit2' : 'btn-primary';
+
+  if (qs.mode === 'result') {
+    return renderQuizResult(topic);
+  }
+
+  const qIndex = qs.current;
+  const question = topic.questions[qIndex];
+  const letters = ['A', 'B', 'C', 'D'];
+
+  let dotsHTML = '';
+  topic.questions.forEach((_, i) => {
+    let dotClass = 'qdot';
+    if (i < qs.answers.length) {
+      dotClass = qs.answers[i] === topic.questions[i].ans ? 'qdot correct' : 'qdot wrong';
+    } else if (i === qIndex) {
+      dotClass = qs.selectedOpt !== null ? 'qdot answered' : 'qdot';
+    }
+    dotsHTML += `<div class="${dotClass}"></div>`;
+  });
+
+  let optsHTML = '';
+  question.opts.forEach((opt, i) => {
+    let optClass = 'quiz-option';
+    if (qs.selectedOpt !== null) {
+      optClass += ' disabled';
+      if (i === question.ans) optClass += ' correct';
+      else if (i === qs.selectedOpt) optClass += ' wrong';
+    }
+    optsHTML += `<button class="${optClass}" onclick="selectOption(${topic.id}, ${i})">
+      <span class="opt-letter">${letters[i]}</span>
+      ${opt}
+    </button>`;
+  });
+
+  let expHTML = '';
+  if (qs.selectedOpt !== null) {
+    expHTML = `<div class="explanation-box">
+      <div class="exp-label">📚 Explanation</div>
+      ${question.exp}
+    </div>`;
+  }
+
+  let nextBtnHTML = '';
+  if (qs.selectedOpt !== null) {
+    const isLast = qIndex === topic.questions.length - 1;
+    nextBtnHTML = `<button class="${btnClass}" onclick="nextQuestion(${topic.id})">
+      ${isLast ? 'See Results →' : 'Next Question →'}
+    </button>`;
+  }
+
+  let retryBtn = ms.mastered ? `<button class="btn-secondary" onclick="retryQuiz(${topic.id})" style="margin-right:auto">↩ Retry</button>` : '';
+
+  return `
+    <div class="quiz-section">
+      <div class="quiz-header">
+        <h3>📝 Practice Questions</h3>
+        <div class="quiz-progress-dots">${dotsHTML}</div>
+      </div>
+      <div class="quiz-card">
+        <div class="quiz-q-num">Question ${qIndex + 1} of ${topic.questions.length}</div>
+        <div class="quiz-question">${question.q}</div>
+        <div class="quiz-options">${optsHTML}</div>
+        ${expHTML}
+      </div>
+      <div class="quiz-nav">
+        ${retryBtn}
+        <div style="margin-left:auto">${nextBtnHTML}</div>
+      </div>
+    </div>
+  `;
+}
+
+function renderQuizResult(topic) {
+  const qs = quizState[topic.id];
+  const score = qs.answers.filter((a, i) => a === topic.questions[i].ans).length;
+  const total = topic.questions.length;
+  const mastered = score >= 4;
+  const isU2 = topic.unit === 2;
+  const btnClass = isU2 ? 'btn-primary unit2' : 'btn-primary';
+
+  let scoreClass = score >= 4 ? (isU2 ? 'rs-teal' : 'rs-gold') : 'rs-red';
+  let masteryHTML = '';
+  if (mastered) {
+    masteryHTML = `<div class="mastery-achieved ${isU2 ? 'unit2' : ''}">
+      ⭐ Mastery Achieved! ${isU2 ? '(Unit II)' : '(Unit I)'}
+    </div>`;
+  } else {
+    masteryHTML = `<p style="color:var(--muted); margin-bottom: 16px; font-size:13px">Need 4/5 for mastery. You got ${score}/5.</p>`;
+  }
+
+  return `
+    <div class="quiz-section">
+      <div class="quiz-result">
+        <div class="result-score ${scoreClass}">${score}/${total}</div>
+        <div class="result-label">${score >= 4 ? 'Excellent work!' : score >= 3 ? 'Good effort — almost there!' : 'Keep reviewing and try again!'}</div>
+        ${masteryHTML}
+        <div style="display:flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+          <button class="btn-secondary" onclick="retryQuiz(${topic.id})">↩ Try Again</button>
+          ${topic.id + 1 < TOPICS.length ? `<button class="${btnClass}" onclick="goToTopic(${topic.id + 1})">Next Topic →</button>` : `<button class="${btnClass}" onclick="showFlashcards()">🃏 Flashcard Review</button>`}
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function selectOption(topicId, optIndex) {
+  const qs = quizState[topicId];
+  if (qs.selectedOpt !== null) return; // already answered
+  qs.selectedOpt = optIndex;
+
+  const topic = TOPICS[topicId];
+  renderTopicViewKeepScroll(topic);
+}
+
+function nextQuestion(topicId) {
+  const qs = quizState[topicId];
+  const topic = TOPICS[topicId];
+
+  qs.answers.push(qs.selectedOpt);
+  qs.selectedOpt = null;
+
+  if (qs.current + 1 >= topic.questions.length) {
+    // Calculate score and finalize
+    const score = qs.answers.filter((a, i) => a === topic.questions[i].ans).length;
+    masteryState[topicId].score = score;
+    masteryState[topicId].mastered = score >= 4;
+    qs.mode = 'result';
+    updateProgress();
+    renderSidebar();
+  } else {
+    qs.current++;
+  }
+  renderTopicViewKeepScroll(topic);
+}
+
+function retryQuiz(topicId) {
+  quizState[topicId] = { current: 0, answers: [], mode: 'quiz', showExp: false, selectedOpt: null };
+  const topic = TOPICS[topicId];
+  renderTopicViewKeepScroll(topic);
+}
+
+function renderTopicViewKeepScroll(topic) {
+  const scrollY = document.getElementById('main').scrollTop;
+  renderTopicView(topic);
+  // scroll to quiz section
+  setTimeout(() => {
+    const quizEl = document.querySelector('.quiz-section');
+    if (quizEl) quizEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, 50);
+}
+
+// =====================================================================
+// FLASHCARDS
+// =====================================================================
+
+function showFlashcards() {
+  currentView = 'flashcard';
+  document.getElementById('dashboard').style.display = 'none';
+  document.getElementById('topic-view').classList.add('hidden');
+  document.getElementById('flashcard-view').classList.remove('hidden');
+  fcIndex = 0;
+  fcFlipped = false;
+  renderFlashcards();
+  document.getElementById('main').scrollTop = 0;
+}
+
+function renderFlashcards() {
+  const card = FLASHCARDS[fcIndex];
+  const isU2 = card.unit === 2;
+  const tagClass = isU2 ? 'u2' : 'u1';
+  const tagLabel = isU2 ? 'Unit II — Biological Systems' : 'Unit I — Chemical Bonding';
+  fcSeen.add(fcIndex);
+
+  let pipsHTML = FLASHCARDS.map((_, i) => {
+    let pipClass = 'fc-pip';
+    if (i === fcIndex) pipClass += ' current';
+    else if (fcSeen.has(i)) pipClass += ' seen';
+    return `<div class="${pipClass}" onclick="goToCard(${i})" style="cursor:pointer"></div>`;
+  }).join('');
+
+  document.getElementById('flashcard-view').innerHTML = `
+    <div class="fc-header">
+      <h2>🃏 Flashcard Review</h2>
+      <p>Tap a card to flip it. Review all ${FLASHCARDS.length} cards across both units.</p>
+      <button class="back-btn" onclick="goToDashboard()" style="margin: 12px auto 0; display:inline-flex">← Back to Dashboard</button>
+    </div>
+
+    <div class="fc-controls">
+      <button class="fc-btn" onclick="prevCard()">‹</button>
+      <div class="fc-counter">${fcIndex + 1} / ${FLASHCARDS.length}</div>
+      <button class="fc-btn" onclick="nextCard()">›</button>
+    </div>
+
+    <div class="flashcard" onclick="flipCard()">
+      <div class="fc-inner ${fcFlipped ? 'flipped' : ''}" id="fc-inner">
+        <div class="fc-front">
+          <div class="fc-tag ${tagClass}">${tagLabel}</div>
+          <div class="fc-text">${card.front}</div>
+          <div class="fc-hint">Tap to reveal answer</div>
+        </div>
+        <div class="fc-back">
+          <div class="fc-tag ${tagClass}">${tagLabel}</div>
+          <div class="fc-text">${card.back}</div>
+          <div class="fc-hint">Tap to flip back</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="fc-progress-row">${pipsHTML}</div>
+
+    <div style="display:flex; gap:12px; justify-content:center; margin-top:24px; flex-wrap:wrap">
+      <button class="btn-secondary" onclick="shuffleCards()">🔀 Shuffle</button>
+      <button class="btn-primary" onclick="nextCard()">Next Card →</button>
+    </div>
+  `;
+}
+
+function flipCard() {
+  fcFlipped = !fcFlipped;
+  const inner = document.getElementById('fc-inner');
+  if (inner) {
+    if (fcFlipped) inner.classList.add('flipped');
+    else inner.classList.remove('flipped');
+  }
+}
+
+function nextCard() {
+  fcIndex = (fcIndex + 1) % FLASHCARDS.length;
+  fcFlipped = false;
+  renderFlashcards();
+}
+
+function prevCard() {
+  fcIndex = (fcIndex - 1 + FLASHCARDS.length) % FLASHCARDS.length;
+  fcFlipped = false;
+  renderFlashcards();
+}
+
+function goToCard(i) {
+  fcIndex = i;
+  fcFlipped = false;
+  renderFlashcards();
+}
+
+function shuffleCards() {
+  // Simple Fisher-Yates shuffle applied to indices
+  fcIndex = Math.floor(Math.random() * FLASHCARDS.length);
+  fcFlipped = false;
+  renderFlashcards();
+}
+
+// =====================================================================
+// INIT
+// =====================================================================
+
+renderSidebar();
+updateProgress();
+</script>
+</body>
+</html>
